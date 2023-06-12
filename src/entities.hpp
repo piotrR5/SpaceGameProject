@@ -1,7 +1,4 @@
-#define ENTITIES
-
-
 #ifndef ENTITIES
-
+#define ENTITIES
 
 #endif

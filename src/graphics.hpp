@@ -1,6 +1,4 @@
-#define GRAPHICS
-
 #ifndef GRAPHICS
-
+#define GRAPHICS
 
 #endif

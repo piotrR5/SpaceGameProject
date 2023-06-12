@@ -1,7 +1,4 @@
-#define GAME
-
-
 #ifndef GAME
-
+#define GAME
 
 #endif

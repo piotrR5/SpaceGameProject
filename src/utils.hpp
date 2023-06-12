@@ -1,7 +1,4 @@
-#define UTILS
-
-
 #ifndef UTILS
-
+#define UTILS
 
 #endif
