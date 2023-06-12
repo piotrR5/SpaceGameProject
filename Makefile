@@ -1,5 +1,5 @@
 SOURCES = main.cpp src/graphics.hpp src/game.hpp src/entities.hpp src/utils.hpp
-LIBS = -lSDL2 -lSDL2_image
+LIBS = -lSDL2 -lSDL2_image -LSDL2_ttf
 
 FLAGS = -Wall -Werror -Wno-error=maybe-uninitialized -Wno-error=unused-result -O3
 
