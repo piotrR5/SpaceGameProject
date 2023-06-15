@@ -14,5 +14,6 @@
 #include "src/utils.hpp"
 
 int main(){
+    Engine engine;
     return 0;
 }
