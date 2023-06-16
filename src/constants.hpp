@@ -16,7 +16,9 @@ const float128 CAMERA_SPEED = 20;
 
 const float128 CAMERA_SCALE_FACTOR = 0.05;
 
+const uint16_t ENTITY_SEGMENT_SIZE = 20;
 
+const float128 _PI = 3.14159265359;
 
 
 #endif

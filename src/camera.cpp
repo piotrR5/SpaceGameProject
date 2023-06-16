@@ -7,8 +7,8 @@ void Camera::move(vec2 v){
 }
 
 void Camera::move(){
-    position.x+=speed.x;
-    position.y+=speed.y;
-    speed.x*=0.5;
-    speed.y*=0.5;
+    position.x+=velocity.x;
+    position.y+=velocity.y;
+    velocity.x*=0.5;
+    velocity.y*=0.5;
 }

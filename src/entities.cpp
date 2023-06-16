@@ -2,18 +2,37 @@
 
 
 Entity::Entity(SDL_Renderer* renderer){
-    position={500,500};
-    speed={0,0};
+    position={BACKGROUND_WIDTH/2,BACKGROUND_HEIGHT/2};
+    velocity={0,0};
     acceleration={0,0};
     orientation=0.0;
-    texture={renderer, "assets/missingTexture.png", nullptr, nullptr};
+    angularVelocity=0.0;
+    rotation_axis=new SDL_Point;
+    rotation_axis->x=ENTITY_SEGMENT_SIZE/2;
+    rotation_axis->y=ENTITY_SEGMENT_SIZE/2;
+    texture={renderer, "assets/entityMissingTexture.png", nullptr, nullptr};
     texture.backgroundRect=new SDL_Rect;
-    texture.backgroundRect->h=20;
-    texture.backgroundRect->w=20;
+    texture.backgroundRect->h=ENTITY_SEGMENT_SIZE;
+    texture.backgroundRect->w=ENTITY_SEGMENT_SIZE;
     texture.backgroundRect->x=position.x;
     texture.backgroundRect->y=position.y;
 
     texture.loadImage();
+}
+
+void Entity::move(){
+    position.x+=velocity.x;
+    position.y+=velocity.y;
+}
+void Entity::rotate(float128 rm){
+    orientation+=rm;
+}
+
+void Entity::update(){
+    move();
+    rotate(angularVelocity);
+    velocity.x+=acceleration.x;
+    velocity.y+=acceleration.y;
 }
 
 void EntityTexture::loadImage(){
@@ -23,3 +42,5 @@ void EntityTexture::loadImage(){
     }
     backgroundTexture=SDL_CreateTextureFromSurface(renderer, background);
 }
+
+

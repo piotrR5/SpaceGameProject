@@ -5,6 +5,7 @@
 #include <ctime>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <math.h>
 
 #ifndef GRAPHICS
 
@@ -61,6 +62,8 @@ public:
     bool mainMenuLoop();
 
     void drawEntities();
+
+    void updateEntities();
 
     Engine();
 
