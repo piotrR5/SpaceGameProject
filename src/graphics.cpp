@@ -88,19 +88,19 @@ void Engine::eventHandler(bool& run){
                 break;
 
                 case SDLK_w:
-                    camera.speed.y=-CAMERA_SPEED;
+                    camera.velocity.y=-CAMERA_SPEED;
                 break;
                 
                 case SDLK_s:
-                    camera.speed.y=CAMERA_SPEED;
+                    camera.velocity.y=CAMERA_SPEED;
                 break;
 
                 case SDLK_a:
-                    camera.speed.x=-CAMERA_SPEED;
+                    camera.velocity.x=-CAMERA_SPEED;
                 break;
                 
                 case SDLK_d:
-                    camera.speed.x=CAMERA_SPEED;
+                    camera.velocity.x=CAMERA_SPEED;
                 break;
             }
             printf( "Key press detected\n" );
@@ -131,6 +131,8 @@ void Engine::eventHandler(bool& run){
 bool Engine::mainLoop(){
     bool run=true;
 
+    float argument=0.0;
+
     while(run){
         int startLoop=SDL_GetTicks();
         SDL_RenderClear(renderer);
@@ -152,6 +154,10 @@ bool Engine::mainLoop(){
         back1.backgroundRect->x=-camera.position.x*camera.scale+SCREEN_WIDTH/2;
         back1.backgroundRect->y=-camera.position.y*camera.scale+SCREEN_HEIGHT/2;
         SDL_RenderCopy(renderer, back1.backgroundTexture,NULL, back1.backgroundRect);
+        entities[0].rotate(2);
+        argument+=0.1;
+        entities[0].velocity={sin(argument), cos(argument)};
+        //entities[0].move();
         drawEntities();
         drawSquare(renderer, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 10);
 
@@ -192,8 +198,15 @@ void Engine::drawEntities(){
     for(auto& e:entities){
         e.texture.backgroundRect->x=e.position.x*camera.scale+back1.backgroundRect->x;
         e.texture.backgroundRect->y=e.position.y*camera.scale+back1.backgroundRect->y;
-        e.texture.backgroundRect->w=20*camera.scale;
-        e.texture.backgroundRect->h=20*camera.scale;
-        SDL_RenderCopy(renderer, e.texture.backgroundTexture, NULL, e.texture.backgroundRect);
+        e.texture.backgroundRect->w=ENTITY_SEGMENT_SIZE*camera.scale;
+        e.texture.backgroundRect->h=ENTITY_SEGMENT_SIZE*camera.scale;
+        //SDL_RenderCopy(renderer, e.texture.backgroundTexture, NULL, e.texture.backgroundRect);
+        SDL_RenderCopyEx(renderer,
+                   e.texture.backgroundTexture,
+                   NULL,
+                   e.texture.backgroundRect,
+                   e.orientation,
+                   e.rotation_axis,
+                   SDL_FLIP_NONE);
     }
 }

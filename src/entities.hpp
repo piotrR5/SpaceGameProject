@@ -19,10 +19,15 @@ struct EntityTexture{
 class Entity{
 public:
     vec2 position;
-    vec2 speed;
+    vec2 velocity;
     vec2 acceleration;
     float128 orientation;
+    float128 angularVelocity;
     EntityTexture texture;
+    SDL_Point* rotation_axis;
+
+    void move();
+    void rotate(float128 rm);
 
 
     Entity(SDL_Renderer* renderer);

@@ -17,3 +17,7 @@ void drawSquare(SDL_Renderer* renderer, int x, int y, int r){
 
 }
 
+matrix22 generateRotationMatrix(float128 arg){
+    return {cos((float)arg), -sin((float)arg), sin((float)arg), cos((float)arg)};
+}
+
