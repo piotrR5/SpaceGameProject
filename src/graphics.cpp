@@ -81,11 +81,25 @@ void Engine::eventHandler(bool& run){
         
         case SDL_KEYDOWN:
             switch(event.key.keysym.sym){
-                case SDLK_q:{
+                case SDLK_q:
                     run = false;
                     std::cout << "Quitting!\n";
-                    break;
-                }
+                break;
+
+                case SDLK_w:
+                    if(camera.position.y < back1.backgroundRect->y + back1.backgroundRect->h)camera.speed.y=20;
+                break;
+                
+                case SDLK_s:
+                    if(camera.position.y>back1.backgroundRect->y)camera.speed.y=-20;
+                break;
+
+                case SDLK_a:
+                    if(camera.position.x < back1.backgroundRect->x + back1.backgroundRect->w) camera.speed.x=20;
+                break;
+                
+                case SDLK_d:
+                    if(camera.position.x>back1.backgroundRect->x)camera.speed.x=-20;
                 break;
             }
             printf( "Key press detected\n" );
@@ -99,13 +113,14 @@ void Engine::eventHandler(bool& run){
             printf( "MouseWheel movement detected\n" );
             if(event.wheel.y > 0)
             {
-                camera.scale*=1.05;
-                printf( "Camera scale is now: %.3f\n", camera.scale);
+                if(camera.scale<4.0)camera.scale*=1.05;
+                printf( "Camera scale is now: %.3f\n", (double)camera.scale);
             }
             else if(event.wheel.y < 0)
             {
-                printf( "Camera scale is now: %.3f\n", camera.scale);
-                camera.scale*=0.95;
+                
+                if(camera.scale>0.5)camera.scale*=0.95;
+                printf( "Camera scale is now: %.3f\n", (double)camera.scale);
             }
         break;
         }
@@ -125,6 +140,8 @@ bool Engine::mainLoop(){
         */
         eventHandler(run);
 
+        SDL_GetMouseState(&mouse_x, &mouse_y);
+
 
         /**
          * draw here
@@ -133,14 +150,17 @@ bool Engine::mainLoop(){
         SDL_SetRenderDrawColor(renderer, 255,0,0,255);
         SDL_SetRenderDrawColor(renderer, 0,0,0,255);
 
+        camera.move();
+
         back1.backgroundRect->h=1000*camera.scale;
         back1.backgroundRect->w=1000*camera.scale;
-        SDL_GetMouseState(&mouse_x, &mouse_y);
-        back1.backgroundRect->x=mouse_x-500*camera.scale;
-        back1.backgroundRect->y=mouse_y-500*camera.scale;
+        back1.backgroundRect->x=camera.position.x-500*camera.scale;
+        back1.backgroundRect->y=camera.position.y-500*camera.scale;
         //back1.backgroundRect->x=-400*camera.scale+mouse_x;
         //back1.backgroundRect->y=-300*camera.scale+mouse_y;
         SDL_RenderCopy(renderer, back1.backgroundTexture,NULL, back1.backgroundRect);
+        drawSquare(renderer,400, 300, 10);
+
         SDL_RenderPresent(renderer);
 
 
