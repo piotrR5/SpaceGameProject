@@ -20,38 +20,36 @@
 Engine::Engine(){
     SDL_Init(SDL_INIT_EVERYTHING);
     TTF_Init();
-
-    //window=SDL_CreateWindow("Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN); 
+ 
     window=SDL_CreateWindow(
         "TEST",
         SDL_WINDOWPOS_CENTERED, 
         SDL_WINDOWPOS_CENTERED, 
-        800,
-        600,
-        SDL_WINDOW_SHOWN); 
+        SCREEN_WIDTH,
+        SCREEN_HEIGHT,
+        SDL_WINDOW_SHOWN
+    ); 
 
     renderer=SDL_CreateRenderer(window, -1, 0);
-    windowRect=new SDL_Rect;
-    windowRect->h=600;
-    windowRect->w=800;
-    windowRect->x=0;
-    windowRect->y=0;
 
     SDL_Surface* icon = IMG_Load("assets/icons/icon.png");
+    SDL_SetWindowIcon(window, icon);
+    delete icon;
 
+    windowRect=new SDL_Rect;
+    windowRect->h=SCREEN_HEIGHT;
+    windowRect->w=SCREEN_WIDTH;
+    windowRect->x=0;
+    windowRect->y=0;
     back1={renderer, "assets/debug1000x1000.png", nullptr, nullptr, windowRect};
-    back1.backgroundRect->h=1000*camera.scale;
-    back1.backgroundRect->w=1000*camera.scale;
+    back1.backgroundRect->h=BACKGROUND_HEIGHT*camera.scale;
+    back1.backgroundRect->w=BACKGROUND_WIDTH*camera.scale;
     back1.backgroundRect->x=0;
     back1.backgroundRect->y=0;
     back1.loadImage();
 
     camera.scale=1.0;
     camera.position={0,0};
-    
-
-    SDL_SetWindowIcon(window, icon);
-    delete icon;
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -87,19 +85,19 @@ void Engine::eventHandler(bool& run){
                 break;
 
                 case SDLK_w:
-                    if(camera.position.y < back1.backgroundRect->y + back1.backgroundRect->h)camera.speed.y=20;
+                    camera.speed.y=-CAMERA_SPEED;
                 break;
                 
                 case SDLK_s:
-                    if(camera.position.y>back1.backgroundRect->y)camera.speed.y=-20;
+                    camera.speed.y=CAMERA_SPEED;
                 break;
 
                 case SDLK_a:
-                    if(camera.position.x < back1.backgroundRect->x + back1.backgroundRect->w) camera.speed.x=20;
+                    camera.speed.x=-CAMERA_SPEED;
                 break;
                 
                 case SDLK_d:
-                    if(camera.position.x>back1.backgroundRect->x)camera.speed.x=-20;
+                    camera.speed.x=CAMERA_SPEED;
                 break;
             }
             printf( "Key press detected\n" );
@@ -113,19 +111,17 @@ void Engine::eventHandler(bool& run){
             printf( "MouseWheel movement detected\n" );
             if(event.wheel.y > 0)
             {
-                if(camera.scale<4.0)camera.scale*=1.05;
+                if(camera.scale<4.0)camera.scale*=(1+CAMERA_SCALE_FACTOR);
                 printf( "Camera scale is now: %.3f\n", (double)camera.scale);
             }
             else if(event.wheel.y < 0)
             {
                 
-                if(camera.scale>0.5)camera.scale*=0.95;
+                if(camera.scale>0.5)camera.scale*=(1-CAMERA_SCALE_FACTOR);
                 printf( "Camera scale is now: %.3f\n", (double)camera.scale);
             }
         break;
         }
-       
-
     }
 }
 
@@ -141,25 +137,21 @@ bool Engine::mainLoop(){
         eventHandler(run);
 
         SDL_GetMouseState(&mouse_x, &mouse_y);
-
-
         /**
          * draw here
         */
 
-        SDL_SetRenderDrawColor(renderer, 255,0,0,255);
-        SDL_SetRenderDrawColor(renderer, 0,0,0,255);
-
         camera.move();
+        std::cout<<"[CAMERA]: "<<(double)camera.position.x<<" "<<(double)camera.position.y<<std::endl;
 
-        back1.backgroundRect->h=1000*camera.scale;
-        back1.backgroundRect->w=1000*camera.scale;
-        back1.backgroundRect->x=camera.position.x-500*camera.scale;
-        back1.backgroundRect->y=camera.position.y-500*camera.scale;
-        //back1.backgroundRect->x=-400*camera.scale+mouse_x;
-        //back1.backgroundRect->y=-300*camera.scale+mouse_y;
+        back1.backgroundRect->h=BACKGROUND_HEIGHT*camera.scale;
+        back1.backgroundRect->w=BACKGROUND_WIDTH*camera.scale;
+        back1.backgroundRect->x=-camera.position.x*camera.scale+SCREEN_WIDTH/2;
+        back1.backgroundRect->y=-camera.position.y*camera.scale+SCREEN_HEIGHT/2;
         SDL_RenderCopy(renderer, back1.backgroundTexture,NULL, back1.backgroundRect);
-        drawSquare(renderer,400, 300, 10);
+        drawSquare(renderer, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 10);
+
+
 
         SDL_RenderPresent(renderer);
 

@@ -11,6 +11,7 @@
 #define GRAPHICS
 
 #include "camera.hpp"
+#include "constants.hpp"
 
 struct Background{
     SDL_Renderer* renderer;

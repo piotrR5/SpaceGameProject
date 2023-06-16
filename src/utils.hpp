@@ -1,3 +1,5 @@
+
+
 #ifndef UTILS
 #define UTILS
 
@@ -13,9 +15,6 @@ struct matrix22{
 };
 
 vec2 multiply(const matrix22& m, const vec2& v);
-
-
-
 
 void drawSquare(SDL_Renderer* renderer, int x, int y, int r);
 

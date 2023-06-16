@@ -16,3 +16,4 @@ void drawSquare(SDL_Renderer* renderer, int x, int y, int r){
     SDL_SetRenderDrawColor(renderer, 0,0,0,255);
 
 }
+
