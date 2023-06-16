@@ -51,6 +51,9 @@ Engine::Engine(){
     camera.scale=1.0;
     camera.position={0,0};
 
+    Entity e1(renderer);
+    entities.push_back(e1);
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);    
@@ -149,6 +152,7 @@ bool Engine::mainLoop(){
         back1.backgroundRect->x=-camera.position.x*camera.scale+SCREEN_WIDTH/2;
         back1.backgroundRect->y=-camera.position.y*camera.scale+SCREEN_HEIGHT/2;
         SDL_RenderCopy(renderer, back1.backgroundTexture,NULL, back1.backgroundRect);
+        drawEntities();
         drawSquare(renderer, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 10);
 
 
@@ -182,4 +186,14 @@ void Background::loadImage(){
         std::cout<<"error: couldn't load image: "<<SDL_GetError()<<"\n";
     }
     backgroundTexture=SDL_CreateTextureFromSurface(renderer, background);
+}
+
+void Engine::drawEntities(){
+    for(auto& e:entities){
+        e.texture.backgroundRect->x=e.position.x*camera.scale+back1.backgroundRect->x;
+        e.texture.backgroundRect->y=e.position.y*camera.scale+back1.backgroundRect->y;
+        e.texture.backgroundRect->w=20*camera.scale;
+        e.texture.backgroundRect->h=20*camera.scale;
+        SDL_RenderCopy(renderer, e.texture.backgroundTexture, NULL, e.texture.backgroundRect);
+    }
 }

@@ -2,13 +2,30 @@
 #define ENTITIES
 
 #include "utils.hpp"
+#include "constants.hpp"
+#include <iostream>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
+struct EntityTexture{
+    SDL_Renderer* renderer;
+    const char* src{""};
+    SDL_Surface *background;
+    SDL_Texture* backgroundTexture;
+    SDL_Rect* backgroundRect;
+    void loadImage();
+};
 
 class Entity{
 public:
     vec2 position;
     vec2 speed;
     vec2 acceleration;
-    vec2 orientation;
+    float128 orientation;
+    EntityTexture texture;
+
+
+    Entity(SDL_Renderer* renderer);
     //{10,20}
 };
 

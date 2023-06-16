@@ -13,16 +13,9 @@
 #include "camera.hpp"
 #include "constants.hpp"
 
-struct Background{
-    SDL_Renderer* renderer;
-    const char* src{""};
-    SDL_Surface *background;
-    SDL_Texture* backgroundTexture;
-    SDL_Rect* backgroundRect;
-    void loadImage();
-};
+#include "entities.hpp"
 
-struct EntityTexture{
+struct Background{
     SDL_Renderer* renderer;
     const char* src{""};
     SDL_Surface *background;
@@ -37,6 +30,7 @@ class Engine{
     uint16_t desiredDT=1000/fps;
 
 public:
+    std::vector<Entity>entities;
     Camera camera;
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -61,6 +55,8 @@ public:
      * @brief function stores the main program loop, primary and periodic logic is done inside
     */
     bool mainLoop();
+
+    void drawEntities();
 
     Engine();
 
