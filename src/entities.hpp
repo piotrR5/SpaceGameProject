@@ -29,6 +29,8 @@ public:
     void move();
     void rotate(float128 rm);
 
+    void update();
+
 
     Entity(SDL_Renderer* renderer);
     //{10,20}

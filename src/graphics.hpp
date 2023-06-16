@@ -59,6 +59,8 @@ public:
 
     void drawEntities();
 
+    void updateEntities();
+
     Engine();
 
     ~Engine();

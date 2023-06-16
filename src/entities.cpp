@@ -28,6 +28,13 @@ void Entity::rotate(float128 rm){
     orientation+=rm;
 }
 
+void Entity::update(){
+    move();
+    rotate(angularVelocity);
+    velocity.x+=acceleration.x;
+    velocity.y+=acceleration.y;
+}
+
 void EntityTexture::loadImage(){
     background=IMG_Load(src);
     if(background==nullptr){
@@ -35,3 +42,5 @@ void EntityTexture::loadImage(){
     }
     backgroundTexture=SDL_CreateTextureFromSurface(renderer, background);
 }
+
+

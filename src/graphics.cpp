@@ -49,7 +49,7 @@ Engine::Engine(){
     back1.loadImage();
 
     camera.scale=1.0;
-    camera.position={0,0};
+    camera.position={BACKGROUND_WIDTH/2,BACKGROUND_HEIGHT/2};
 
     Entity e1(renderer);
     entities.push_back(e1);
@@ -154,10 +154,7 @@ bool Engine::mainLoop(){
         back1.backgroundRect->x=-camera.position.x*camera.scale+SCREEN_WIDTH/2;
         back1.backgroundRect->y=-camera.position.y*camera.scale+SCREEN_HEIGHT/2;
         SDL_RenderCopy(renderer, back1.backgroundTexture,NULL, back1.backgroundRect);
-        entities[0].rotate(2);
-        argument+=0.1;
-        entities[0].velocity={sin(argument), cos(argument)};
-        //entities[0].move();
+        updateEntities();
         drawEntities();
         drawSquare(renderer, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 10);
 
@@ -208,5 +205,11 @@ void Engine::drawEntities(){
                    e.orientation,
                    e.rotation_axis,
                    SDL_FLIP_NONE);
+    }
+}
+
+void Engine::updateEntities(){
+    for(auto& e:entities){
+        e.update();
     }
 }
