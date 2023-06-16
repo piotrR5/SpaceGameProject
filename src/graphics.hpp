@@ -10,6 +10,8 @@
 
 #define GRAPHICS
 
+#include "camera.hpp"
+
 struct Background{
     SDL_Renderer* renderer;
     const char* src{""};
@@ -34,10 +36,12 @@ class Engine{
     uint16_t desiredDT=1000/fps;
 
 public:
+    Camera camera;
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Rect* windowRect;
     Background back1;
+    int mouse_x, mouse_y;
     
     int getFps() {return fps;}
     /**

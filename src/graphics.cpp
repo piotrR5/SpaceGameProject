@@ -26,21 +26,28 @@ Engine::Engine(){
         "TEST",
         SDL_WINDOWPOS_CENTERED, 
         SDL_WINDOWPOS_CENTERED, 
-        1024,
-        576,
+        800,
+        600,
         SDL_WINDOW_SHOWN); 
 
     renderer=SDL_CreateRenderer(window, -1, 0);
     windowRect=new SDL_Rect;
-    windowRect->h=576;
-    windowRect->w=1024;
+    windowRect->h=600;
+    windowRect->w=800;
     windowRect->x=0;
     windowRect->y=0;
 
     SDL_Surface* icon = IMG_Load("assets/icons/icon.png");
 
-    back1={renderer, "assets/background1.jpeg", nullptr, nullptr, windowRect};
+    back1={renderer, "assets/debug1000x1000.png", nullptr, nullptr, windowRect};
+    back1.backgroundRect->h=1000*camera.scale;
+    back1.backgroundRect->w=1000*camera.scale;
+    back1.backgroundRect->x=0;
+    back1.backgroundRect->y=0;
     back1.loadImage();
+
+    camera.scale=1.0;
+    camera.position={0,0};
     
 
     SDL_SetWindowIcon(window, icon);
@@ -70,9 +77,8 @@ void Engine::eventHandler(bool& run){
         case SDL_QUIT:
             run = false;
             std::cout << "Quitting!\n";
-            break;
-        
         break;
+        
         case SDL_KEYDOWN:
             switch(event.key.keysym.sym){
                 case SDLK_q:{
@@ -83,12 +89,28 @@ void Engine::eventHandler(bool& run){
                 break;
             }
             printf( "Key press detected\n" );
-            break;
+        break;
 
         case SDL_KEYUP:
             printf( "Key release detected\n" );
-            break;
+        break;
+
+        case SDL_MOUSEWHEEL:
+            printf( "MouseWheel movement detected\n" );
+            if(event.wheel.y > 0)
+            {
+                camera.scale*=1.05;
+                printf( "Camera scale is now: %.3f\n", camera.scale);
+            }
+            else if(event.wheel.y < 0)
+            {
+                printf( "Camera scale is now: %.3f\n", camera.scale);
+                camera.scale*=0.95;
+            }
+        break;
         }
+       
+
     }
 }
 
@@ -111,7 +133,14 @@ bool Engine::mainLoop(){
         SDL_SetRenderDrawColor(renderer, 255,0,0,255);
         SDL_SetRenderDrawColor(renderer, 0,0,0,255);
 
-        SDL_RenderCopy(renderer, back1.backgroundTexture, NULL, back1.backgroundRect);
+        back1.backgroundRect->h=1000*camera.scale;
+        back1.backgroundRect->w=1000*camera.scale;
+        SDL_GetMouseState(&mouse_x, &mouse_y);
+        back1.backgroundRect->x=mouse_x-500*camera.scale;
+        back1.backgroundRect->y=mouse_y-500*camera.scale;
+        //back1.backgroundRect->x=-400*camera.scale+mouse_x;
+        //back1.backgroundRect->y=-300*camera.scale+mouse_y;
+        SDL_RenderCopy(renderer, back1.backgroundTexture,NULL, back1.backgroundRect);
         SDL_RenderPresent(renderer);
 
 
