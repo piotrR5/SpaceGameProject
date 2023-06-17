@@ -22,7 +22,7 @@ Engine::Engine(){
     TTF_Init();
  
     window=SDL_CreateWindow(
-        "TEST",
+        "SPACE GAME by PEDROS & KOYOTOS",
         SDL_WINDOWPOS_CENTERED, 
         SDL_WINDOWPOS_CENTERED, 
         SCREEN_WIDTH,
@@ -41,25 +41,19 @@ Engine::Engine(){
     windowRect->w=SCREEN_WIDTH;
     windowRect->x=0;
     windowRect->y=0;
-    back1={renderer, "assets/debug1000x1000.png", nullptr, nullptr, windowRect};
-    back1.backgroundRect->h=BACKGROUND_HEIGHT*camera.scale;
-    back1.backgroundRect->w=BACKGROUND_WIDTH*camera.scale;
-    back1.backgroundRect->x=0;
-    back1.backgroundRect->y=0;
-    back1.loadImage();
-
     camera.scale=1.0;
     camera.position={BACKGROUND_WIDTH/2,BACKGROUND_HEIGHT/2};
 
     Entity e1(renderer);
+    Entity menuButton(renderer);
     entities.push_back(e1);
+    entities.push_back(menuButton);
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);    
 
     srand(time(NULL));
-    std::cout<<("Ryba wczesniej");
     mainMenuLoop();
 }
 
@@ -132,6 +126,9 @@ bool Engine::mainLoop(){
     bool run=true;
 
     float argument=0.0;
+
+    back1={renderer, "assets/background1.jpeg", nullptr, nullptr, windowRect};
+    back1.loadImage();
 
     while(run){
         int startLoop=SDL_GetTicks();
@@ -218,6 +215,12 @@ bool Engine::mainMenuLoop()
 {
     bool run = true;
     bool gameState = false;
+    back1={renderer, "assets/mainMenuBackground.png", nullptr, nullptr, windowRect};
+    entities[1].texture = {renderer, "assets/button.jpg", nullptr,nullptr, entities[1].texture.backgroundRect};
+    entities[1].position.x=SCREEN_WIDTH/2;
+    entities[1].position.y=SCREEN_HEIGHT/2;
+    back1.loadImage();
+    entities[1].texture.loadImage();
     while(run)
     {
         SDL_GetMouseState(&mouse_x, &mouse_y);
@@ -225,11 +228,13 @@ bool Engine::mainMenuLoop()
         SDL_RenderClear(renderer);
         mainMenuEventHandler(run,gameState);
         SDL_GetMouseState(&mouse_x, &mouse_y);
-        back1.backgroundRect->h=BACKGROUND_HEIGHT*camera.scale;
-        back1.backgroundRect->w=BACKGROUND_WIDTH*camera.scale;
-        back1.backgroundRect->x=-camera.position.x*camera.scale+SCREEN_WIDTH/2;
-        back1.backgroundRect->y=-camera.position.y*camera.scale+SCREEN_HEIGHT/2;
-        drawSquare(renderer, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 10);
+        back1.backgroundRect->h=SCREEN_HEIGHT;
+        back1.backgroundRect->w=SCREEN_WIDTH;
+        back1.backgroundRect->x=0;
+        back1.backgroundRect->y=0;
+        SDL_RenderCopy(renderer, back1.backgroundTexture,NULL, back1.backgroundRect);
+        updateEntities();
+        drawEntities();
         SDL_RenderPresent(renderer);
         //clearConsole();
         int dT = SDL_GetTicks64() - startLoop;
