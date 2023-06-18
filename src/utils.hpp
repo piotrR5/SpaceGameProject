@@ -1,5 +1,3 @@
-
-
 #ifndef UTILS
 #define UTILS
 

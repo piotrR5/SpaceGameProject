@@ -59,12 +59,12 @@ Engine::Engine(){
     SDL_RenderPresent(renderer);    
 
     srand(time(NULL));
-
-    mainLoop();
+    std::cout<<("Ryba wczesniej");
+    mainMenuLoop();
 }
 
 Engine::~Engine(){
-    SDL_DestroyWindow(window);
+    SDL_DestroyWindow(window); 
     delete windowRect;
     TTF_Quit();
     SDL_Quit();
@@ -180,6 +180,71 @@ bool Engine::mainLoop(){
         }
     }
 
+    return 0;
+}
+
+void Engine::mainMenuEventHandler(bool& run, bool& start){
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+        case SDL_QUIT:
+            run = false;
+            std::cout << "Quitting!\n";
+        break;
+        
+        case SDL_MOUSEBUTTONDOWN:
+            switch(event.button.button)
+            {
+                case SDL_BUTTON_LEFT :
+                    if(mouse_x<SCREEN_WIDTH/2+10 && mouse_x>SCREEN_WIDTH/2-10 && mouse_y<SCREEN_HEIGHT/2+10 && mouse_y>SCREEN_HEIGHT/2-10)
+                    {
+                        run = false;
+                        start = true;
+                    }
+                    break;
+                case SDL_BUTTON_RIGHT:
+                    break;
+            }
+        break;
+
+        case SDL_KEYUP:
+            printf( "Key release detected\n" );
+        break;
+        }
+    }
+}
+
+bool Engine::mainMenuLoop()
+{
+    bool run = true;
+    bool gameState = false;
+    while(run)
+    {
+        SDL_GetMouseState(&mouse_x, &mouse_y);
+        int startLoop=SDL_GetTicks();
+        SDL_RenderClear(renderer);
+        mainMenuEventHandler(run,gameState);
+        SDL_GetMouseState(&mouse_x, &mouse_y);
+        back1.backgroundRect->h=BACKGROUND_HEIGHT*camera.scale;
+        back1.backgroundRect->w=BACKGROUND_WIDTH*camera.scale;
+        back1.backgroundRect->x=-camera.position.x*camera.scale+SCREEN_WIDTH/2;
+        back1.backgroundRect->y=-camera.position.y*camera.scale+SCREEN_HEIGHT/2;
+        drawSquare(renderer, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 10);
+        SDL_RenderPresent(renderer);
+        //clearConsole();
+        int dT = SDL_GetTicks64() - startLoop;
+        std::string fps_text;
+        if(dT)fps_text=" "+std::to_string((int)(1000/(float)(dT)));
+        else fps_text=" 1000";
+        //std::cout<<"[fps: "<<1000/(double)(dT+0.001)<<"]\n";
+        if(dT<desiredDT){
+            SDL_Delay(desiredDT-dT);
+        }
+    }
+    if(gameState)
+    {
+        mainLoop();
+    }
     return 0;
 }
 

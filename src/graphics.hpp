@@ -52,10 +52,14 @@ public:
     */
     void eventHandler(bool& run);
 
+    void mainMenuEventHandler(bool& run, bool& start);
+
     /**
      * @brief function stores the main program loop, primary and periodic logic is done inside
     */
     bool mainLoop();
+
+    bool mainMenuLoop();
 
     void drawEntities();
 
