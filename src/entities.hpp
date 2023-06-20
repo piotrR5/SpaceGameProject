@@ -7,16 +7,19 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-struct EntityTexture{
+class EntityTexture{
+    public:
     SDL_Renderer* renderer;
-    const char* src{""};
+    std::string src{""};
     SDL_Surface *background;
     SDL_Texture* backgroundTexture;
     SDL_Rect* backgroundRect;
     void loadImage();
+    EntityTexture();
+    EntityTexture(SDL_Renderer* renderer,int16_t x, int16_t y, uint16_t w, uint16_t h,std::string src);
 };
 
-class Entity{
+struct Entity{
 public:
     vec2 position;
     vec2 velocity;
