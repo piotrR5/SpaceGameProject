@@ -12,6 +12,9 @@ const uint16_t SCREEN_HEIGHT = 600;
 const uint16_t BACKGROUND_WIDTH = 1000;
 const uint16_t BACKGROUND_HEIGHT = 1000;
 
+const uint16_t SKYBOX_WIDTH = 1920;
+const uint16_t SKYBOX_HEIGHT = 1080;
+
 const float128 CAMERA_SPEED = 20;
 
 const float128 CAMERA_SCALE_FACTOR = 0.05;
