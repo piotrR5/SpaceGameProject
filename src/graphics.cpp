@@ -50,11 +50,10 @@ Engine::Engine(){
     entities.push_back(e1);
     entities.push_back(menuButton);
 
+    back1={renderer, "assets/debug1000x1000.png", nullptr, nullptr, windowRect};
+    back1.loadImage();
+
     this->loadSkybox();
-
-
-
-    skybox.loadImage();
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -132,10 +131,7 @@ void Engine::eventHandler(bool& run){
 bool Engine::mainLoop(){
     bool run=true;
 
-    float argument=0.0;
-
-    back1={renderer, "assets/debug1000x1000.png", nullptr, nullptr, windowRect};
-    back1.loadImage();
+    
 
     while(run){
         int startLoop=SDL_GetTicks();
@@ -272,7 +268,8 @@ void Background::loadImage(){
 }
 
 void Engine::drawEntities(){
-    for(auto& e:entities){
+    for(const auto& e:entities){
+        if(!e.isVisible)continue;
         e.texture.backgroundRect->x=e.position.x*camera.scale+back1.backgroundRect->x;
         e.texture.backgroundRect->y=e.position.y*camera.scale+back1.backgroundRect->y;
         e.texture.backgroundRect->w=ENTITY_SEGMENT_SIZE*camera.scale;
