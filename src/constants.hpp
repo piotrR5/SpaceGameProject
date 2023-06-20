@@ -20,5 +20,8 @@ const uint16_t ENTITY_SEGMENT_SIZE = 20;
 
 const float128 _PI = 3.14159265359;
 
+const uint16_t SKYBOX_HEIHGT = 2000;
+const uint16_t SKYBOX_WIDTH = 2000;
+
 
 #endif
