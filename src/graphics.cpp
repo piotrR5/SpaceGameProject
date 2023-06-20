@@ -30,6 +30,7 @@ Engine::Engine(){
         SDL_WINDOW_SHOWN
     ); 
 
+
     renderer=SDL_CreateRenderer(window, -1, 0);
 
     SDL_Surface* icon = IMG_Load("assets/icons/icon.png");
@@ -48,6 +49,12 @@ Engine::Engine(){
     Entity menuButton(renderer);
     entities.push_back(e1);
     entities.push_back(menuButton);
+
+    this->loadSkybox();
+
+
+
+    skybox.loadImage();
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -127,7 +134,7 @@ bool Engine::mainLoop(){
 
     float argument=0.0;
 
-    back1={renderer, "assets/background1.jpeg", nullptr, nullptr, windowRect};
+    back1={renderer, "assets/debug1000x1000.png", nullptr, nullptr, windowRect};
     back1.loadImage();
 
     while(run){
@@ -142,6 +149,8 @@ bool Engine::mainLoop(){
         /**
          * draw here
         */
+
+       drawSkybox();
 
         camera.move();
         std::cout<<"[CAMERA]: "<<(double)camera.position.x<<" "<<(double)camera.position.y<<std::endl;
@@ -248,6 +257,7 @@ bool Engine::mainMenuLoop()
     }
     if(gameState)
     {
+        entities.pop_back();
         mainLoop();
     }
     return 0;
@@ -283,3 +293,27 @@ void Engine::updateEntities(){
         e.update();
     }
 }
+
+void Engine::loadSkybox(){
+    skybox.backgroundRect=new SDL_Rect;
+    skybox.backgroundRect->x=0;
+    skybox.backgroundRect->y=0;
+    skybox.backgroundRect->w=SKYBOX_WIDTH;
+    skybox.backgroundRect->h=SKYBOX_HEIGHT;
+
+    skybox.src="assets/background1.jpeg";
+
+    skybox.renderer=renderer;
+
+    skybox.loadImage();
+}
+
+void Engine::drawSkybox(){
+    SDL_RenderCopy(renderer, skybox.backgroundTexture, NULL , skybox.backgroundRect);
+}
+
+
+
+//TODO:
+//interfejsy
+//generalne uporzadkowanie

@@ -38,6 +38,8 @@ public:
     SDL_Rect* windowRect;
     Background back1;
     int mouse_x, mouse_y;
+
+    Background skybox;
     
     int getFps() {return fps;}
     /**
@@ -64,6 +66,9 @@ public:
     void drawEntities();
 
     void updateEntities();
+
+    void loadSkybox();
+    void drawSkybox();
 
     Engine();
 
