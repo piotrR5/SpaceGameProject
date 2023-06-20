@@ -18,11 +18,13 @@
 
 struct Background{
     SDL_Renderer* renderer;
-    const char* src{""};
+    std::string src{""};
     SDL_Surface *background;
     SDL_Texture* backgroundTexture;
     SDL_Rect* backgroundRect;
     void loadImage();
+    Background();
+    Background(SDL_Renderer* renderer, int16_t x, int16_t y, uint16_t w, uint16_t h,std::string src);
 };
 
 
@@ -37,6 +39,7 @@ public:
     SDL_Renderer* renderer;
     SDL_Rect* windowRect;
     Background back1;
+    Background skybox;
     int mouse_x, mouse_y;
 
     Background skybox;
