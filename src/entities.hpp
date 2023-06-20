@@ -15,8 +15,6 @@ class EntityTexture{
     SDL_Texture* backgroundTexture;
     SDL_Rect* backgroundRect;
     void loadImage();
-    EntityTexture();
-    EntityTexture(SDL_Renderer* renderer,int16_t x, int16_t y, uint16_t w, uint16_t h,std::string src);
 };
 
 struct Entity{

@@ -50,7 +50,7 @@ Engine::Engine(){
     entities.push_back(e1);
     entities.push_back(menuButton);
 
-    back1={renderer, "assets/debug1000x1000.png", nullptr, nullptr, windowRect};
+    back1=Background(renderer, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, "assets/debug1000x1000.png");
     back1.loadImage();
 
     this->loadSkybox();
@@ -59,11 +59,7 @@ Engine::Engine(){
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);    
 
-    skybox.backgroundRect=new SDL_Rect;
-    loadSkybox("assets/skybox.png");
-
     srand(time(NULL));
-    std::cout<<"Ryba 1"<<std::endl;
     mainMenuLoop();
 }
 
@@ -228,11 +224,19 @@ bool Engine::mainMenuLoop()
     bool run = true;
     bool gameState = false;
     back1 = Background(renderer, 0,0,0,0,"assets/mainMenuBackground.png");
-     std::cout<<"Ryba 2"<<std::endl;
     back1.backgroundRect = windowRect;
-    //entities[1].texture = {renderer, "assets/button.jpg", nullptr,nullptr, entities[1].texture.backgroundRect};
-    entities[1].texture= EntityTexture(renderer, SCREEN_WIDTH/2,SCREEN_HEIGHT/2, ENTITY_SEGMENT_SIZE, ENTITY_SEGMENT_SIZE, "assets/button.jpg");
+    back1.backgroundRect->x=0;
+    back1.backgroundRect->y=0;
+    back1.backgroundRect->w=ENTITY_SEGMENT_SIZE;
+    back1.backgroundRect->h=ENTITY_SEGMENT_SIZE;
     back1.loadImage();
+    entities[1].texture = EntityTexture();
+    entities[1].texture.backgroundRect=new SDL_Rect;
+    entities[1].texture.backgroundRect->h=ENTITY_SEGMENT_SIZE;
+    entities[1].texture.backgroundRect->w=ENTITY_SEGMENT_SIZE;
+    entities[1].texture.backgroundRect->x=entities[1].position.x;
+    entities[1].texture.backgroundRect->y=entities[1].position.y;
+    entities[1].texture.src="assets/button.jpg";
     entities[1].texture.loadImage();
     while(run)
     {
@@ -268,7 +272,7 @@ bool Engine::mainMenuLoop()
 }
 
 void Background::loadImage(){
-    background=IMG_Load(src.c_str());
+    background=IMG_Load(src);
     if(background==nullptr){
         std::cout<<"error: couldn't load image: "<<SDL_GetError()<<"\n";
         IMG_Load("assets/entityMissingTexture.png");
@@ -318,7 +322,33 @@ void Engine::drawSkybox(){
     SDL_RenderCopy(renderer, skybox.backgroundTexture, NULL , skybox.backgroundRect);
 }
 
+Background::Background(SDL_Renderer* renderer){
+    this->renderer=renderer;
+    backgroundRect=new SDL_Rect;
+    backgroundRect->x=0;
+    backgroundRect->y=0;
+    backgroundRect->w=ENTITY_SEGMENT_SIZE;
+    backgroundRect->h=ENTITY_SEGMENT_SIZE;
+    src="assets/missingTexture.png";
 
+    loadImage();
+}
+
+Background::Background(SDL_Renderer* renderer, int16_t x, int16_t y, uint16_t w, uint16_t h,const char* src){
+    this->renderer=renderer;
+    backgroundRect=new SDL_Rect;
+    backgroundRect->x=x;
+    backgroundRect->y=x;
+    backgroundRect->w=w;
+    backgroundRect->h=h;
+    this->src = src;
+
+    loadImage();
+}
+
+Background::Background(){
+
+}
 
 //TODO:
 //interfejsy
