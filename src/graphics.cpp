@@ -82,19 +82,19 @@ void Engine::eventHandler(bool& run){
                 break;
 
                 case SDLK_w:
-                    camera.velocity.y=-CAMERA_SPEED;
+                    if(camera.position.y > -10)camera.velocity.y=-CAMERA_SPEED;
                 break;
                 
                 case SDLK_s:
-                    camera.velocity.y=CAMERA_SPEED;
+                    if(camera.position.y < BACKGROUND_HEIGHT + 10) camera.velocity.y=CAMERA_SPEED;
                 break;
 
                 case SDLK_a:
-                    camera.velocity.x=-CAMERA_SPEED;
+                    if(camera.position.x > -10)camera.velocity.x=-CAMERA_SPEED;
                 break;
                 
                 case SDLK_d:
-                    camera.velocity.x=CAMERA_SPEED;
+                    if(camera.position.x < BACKGROUND_WIDTH + 10)camera.velocity.x=CAMERA_SPEED;
                 break;
             }
             printf( "Key press detected\n" );
