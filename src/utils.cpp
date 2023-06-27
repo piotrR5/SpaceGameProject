@@ -1,23 +1,23 @@
 #include "utils.hpp"
 
-
-
-vec2 multiply(const matrix22& m, const vec2& v){
-    return vec2{m.a*v.x+m.b*v.y, m.c*v.x + m.d*v.y};
+vec2 multiply(const vec2& v, float128 s){
+    return {v.x*s, v.y*s};
 }
 
-void drawSquare(SDL_Renderer* renderer, int x, int y, int r){
-    SDL_SetRenderDrawColor(renderer, 255,0,0,255);
-    for(int i=x-r;i<x+r;i++){
-        for(int j=y-r;j<y+r;j++){
-            SDL_RenderDrawPoint(renderer, i, j);
-        }
-    }
-    SDL_SetRenderDrawColor(renderer, 0,0,0,255);
-
+float128 dotProduct(const vec2& v, const vec2& u){
+    return {v.x * u.x + v.y * u.y};
 }
+
+float128 crossProduct(const vec2& v, const vec2& u){
+    return {v.x*u.y - u.x*v.y};
+}
+
+
 
 matrix22 generateRotationMatrix(float128 arg){
     return {cos((float)arg), -sin((float)arg), sin((float)arg), cos((float)arg)};
 }
 
+vec2 multiply(const matrix22& m, const vec2& v){
+    return vec2{m.xi*v.x+m.yi*v.y, m.xj*v.x + m.yj*v.y};
+}

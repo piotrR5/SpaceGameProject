@@ -1,4 +1,5 @@
 #ifndef ENTITIES
+
 #define ENTITIES
 
 #include "utils.hpp"
@@ -6,16 +7,8 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
-class EntityTexture{
-    public:
-    SDL_Renderer* renderer;
-    std::string src{""};
-    SDL_Surface *background;
-    SDL_Texture* backgroundTexture;
-    SDL_Rect* backgroundRect;
-    void loadImage();
-};
+#include "texture.hpp"
+#include "log.hpp"
 
 struct Entity{
 public:
@@ -24,8 +17,9 @@ public:
     vec2 acceleration;
     float128 orientation;
     float128 angularVelocity;
-    EntityTexture texture;
     SDL_Point* rotation_axis;
+
+    Texture texture;
 
     bool isVisible{1}, isMovable{1}, isCollidable{1};
 

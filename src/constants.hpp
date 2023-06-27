@@ -23,5 +23,6 @@ const uint16_t ENTITY_SEGMENT_SIZE = 20;
 
 const float128 _PI = 3.14159265359;
 
+const char* ENTITY_MISSING_TEXTURE = "assets/entityMissingTexture.png";
 
 #endif

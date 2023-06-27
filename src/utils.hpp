@@ -10,12 +10,16 @@ struct vec2{
 };
 
 struct matrix22{
-    float128 a,b,c,d;
+    float128 xi, yi, xj, yj;
 };
 
 vec2 multiply(const matrix22& m, const vec2& v);
 
-void drawSquare(SDL_Renderer* renderer, int x, int y, int r);
+vec2 multiply(const vec2& v, float128 s);
+
+float128 dotProduct(const vec2& v, const vec2& u);
+
+float128 crossProduct(const vec2& v, const vec2& u);
 
 matrix22 generateRotationMatrix(float128 arg);
 
