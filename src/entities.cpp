@@ -28,38 +28,27 @@ Entity::Entity(
     vec2 acceleration, 
     float128 orientation, 
     const char* txtpath,
-    bool isVisible, 
-    bool isMovable, 
-    bool isCollidable): 
-        position(position), 
-        velocity(velocity), 
-        acceleration(acceleration),
-        orientation(orientation), 
-        isVisible(isVisible), 
-        isMovable(isMovable),
-        isCollidable(isCollidable) {
+    EntityFlags flags){
 
+    if(renderer==nullptr){
+        log("Error: renderer is null");
+        return;
+    }
+
+    this->renderer=renderer;
+    this->position=position;
+    this->velocity=velocity;
+    this->acceleration=acceleration;
+    this->orientation=orientation;
 
     rotation_axis = new SDL_Point;
     texture = Texture(renderer, position.x, position.y, ENTITY_SEGMENT_SIZE,
-        ENTITY_SEGMENT_SIZE, ENTITY_MISSING_TEXTURE);
+        ENTITY_SEGMENT_SIZE, txtpath);
     texture.loadImage();
 
     log("Entity created");
 }
 
-void Entity::move() {
-    position.x += velocity.x;
-    position.y += velocity.y;
-}
-
-void Entity::rotate(float128 rm) { 
-    orientation += rm; 
-}
-
-void Entity::update() {
-    move();
-    rotate(angularVelocity);
-    velocity.x += acceleration.x;
-    velocity.y += acceleration.y;
+Entity::Entity(){
+    renderer=nullptr;
 }

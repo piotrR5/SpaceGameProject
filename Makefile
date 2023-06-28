@@ -1,4 +1,4 @@
-SOURCES = main.cpp src/graphics.hpp src/graphics.cpp src/game.hpp src/entities.hpp src/entities.cpp src/utils.hpp src/utils.cpp src/constants.hpp src/camera.hpp src/camera.cpp
+SOURCES = main.cpp src/camera.cpp src/camera.hpp src/constants.hpp src/entities.cpp src/entities.hpp src/entity-background.cpp src/entity-background.hpp src/graphics.cpp src/graphics.hpp src/log.cpp src/log.hpp src/texture.cpp src/texture.hpp src/utils.cpp src/utils.hpp
 
 LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
 

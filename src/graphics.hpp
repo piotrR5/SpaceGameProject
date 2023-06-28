@@ -1,3 +1,12 @@
+#ifndef GRAPHICS
+
+#define GRAPHICS
+
+#include "camera.hpp"
+#include "constants.hpp"
+
+#include "entity-background.hpp"
+
 #include <vector>
 #include <iostream>
 #include <SDL2/SDL.h>
@@ -6,27 +15,6 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <math.h>
-
-#ifndef GRAPHICS
-
-#define GRAPHICS
-
-#include "camera.hpp"
-#include "constants.hpp"
-
-#include "entities.hpp"
-
-struct Background{
-    SDL_Renderer* renderer;
-    const char* src{""};
-    SDL_Surface *background;
-    SDL_Texture* backgroundTexture;
-    SDL_Rect* backgroundRect;
-    void loadImage();
-    Background();
-    Background(SDL_Renderer*);
-    Background(SDL_Renderer* renderer, int16_t x, int16_t y, uint16_t w, uint16_t h,const char* src);
-};
 
 
 class Engine{
@@ -39,8 +27,7 @@ public:
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Rect* windowRect;
-    Background back1;
-    Background skybox;
+    EntityBackground back{nullptr, "assets/missingTexture.png"};
     int mouse_x, mouse_y;
     
     int getFps() {return fps;}

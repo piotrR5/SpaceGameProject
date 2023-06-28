@@ -30,11 +30,29 @@ Engine::Engine(){
         SDL_WINDOW_SHOWN
     ); 
 
+    if(window==nullptr){
+        log("Error: window couldn't be created");
+        exit(0);
+    }
+    log("window created succesfully");
+
 
     renderer=SDL_CreateRenderer(window, -1, 0);
 
+    if(renderer==nullptr){
+        log("Error: renderer couldn't be created");
+        exit(0);
+    }
+    log("renderer created succesfully");
+
     SDL_Surface* icon = IMG_Load("assets/icons/icon.png");
-    SDL_SetWindowIcon(window, icon);
+
+    if(icon==nullptr){
+        log("Error: icon couldn't be loaded");
+    }else{
+        SDL_SetWindowIcon(window, icon);
+        log("icon loaded succesfully");
+    }
     delete icon;
 
     windowRect=new SDL_Rect;
@@ -45,22 +63,14 @@ Engine::Engine(){
     camera.scale=1.0;
     camera.position={BACKGROUND_WIDTH/2,BACKGROUND_HEIGHT/2};
 
-    Entity e1(renderer);
-    Entity menuButton(renderer);
-    entities.push_back(e1);
-    entities.push_back(menuButton);
-
-    back1=Background(renderer, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, "assets/debug1000x1000.png");
-    back1.loadImage();
-
-    this->loadSkybox();
+    back = EntityBackground(renderer, "assets/skybox.png");
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);    
 
     srand(time(NULL));
-    mainMenuLoop();
+    mainLoop();
 }
 
 Engine::~Engine(){
@@ -146,23 +156,12 @@ bool Engine::mainLoop(){
          * draw here
         */
 
-       drawSkybox();
+        back.render();
 
         camera.move();
-        std::cout<<"[CAMERA]: "<<(double)camera.position.x<<" "<<(double)camera.position.y<<std::endl;
 
-        drawSkybox();
-
-
-        back1.backgroundRect->h=BACKGROUND_HEIGHT*camera.scale;
-        back1.backgroundRect->w=BACKGROUND_WIDTH*camera.scale;
-        back1.backgroundRect->x=-camera.position.x*camera.scale+SCREEN_WIDTH/2;
-        back1.backgroundRect->y=-camera.position.y*camera.scale+SCREEN_HEIGHT/2;
-        SDL_RenderCopy(renderer, back1.backgroundTexture,NULL, back1.backgroundRect);
-        updateEntities();
-        drawEntities();
-        drawSquare(renderer, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 10);
-
+        
+        log("CHECK1");
 
 
         SDL_RenderPresent(renderer);
@@ -218,138 +217,3 @@ void Engine::mainMenuEventHandler(bool& run, bool& start){
         }
     }
 }
-
-bool Engine::mainMenuLoop()
-{
-    bool run = true;
-    bool gameState = false;
-    back1 = Background(renderer, 0,0,0,0,"assets/mainMenuBackground.png");
-    back1.backgroundRect = windowRect;
-    back1.backgroundRect->x=0;
-    back1.backgroundRect->y=0;
-    back1.backgroundRect->w=ENTITY_SEGMENT_SIZE;
-    back1.backgroundRect->h=ENTITY_SEGMENT_SIZE;
-    back1.loadImage();
-    entities[1].texture = EntityTexture();
-    entities[1].texture.backgroundRect=new SDL_Rect;
-    entities[1].texture.backgroundRect->h=ENTITY_SEGMENT_SIZE;
-    entities[1].texture.backgroundRect->w=ENTITY_SEGMENT_SIZE;
-    entities[1].texture.backgroundRect->x=entities[1].position.x;
-    entities[1].texture.backgroundRect->y=entities[1].position.y;
-    entities[1].texture.src="assets/button.jpg";
-    entities[1].texture.loadImage();
-    while(run)
-    {
-        SDL_GetMouseState(&mouse_x, &mouse_y);
-        int startLoop=SDL_GetTicks();
-        SDL_RenderClear(renderer);
-        mainMenuEventHandler(run,gameState);
-        SDL_GetMouseState(&mouse_x, &mouse_y);
-        back1.backgroundRect->h=SCREEN_HEIGHT;
-        back1.backgroundRect->w=SCREEN_WIDTH;
-        back1.backgroundRect->x=0;
-        back1.backgroundRect->y=0;
-        SDL_RenderCopy(renderer, back1.backgroundTexture,NULL, back1.backgroundRect);
-        updateEntities();
-        drawEntities();
-        SDL_RenderPresent(renderer);
-        //clearConsole();
-        int dT = SDL_GetTicks64() - startLoop;
-        std::string fps_text;
-        if(dT)fps_text=" "+std::to_string((int)(1000/(float)(dT)));
-        else fps_text=" 1000";
-        //std::cout<<"[fps: "<<1000/(double)(dT+0.001)<<"]\n";
-        if(dT<desiredDT){
-            SDL_Delay(desiredDT-dT);
-        }
-    }
-    if(gameState)
-    {
-        entities.pop_back();
-        mainLoop();
-    }
-    return 0;
-}
-
-void Background::loadImage(){
-    background=IMG_Load(src);
-    if(background==nullptr){
-        std::cout<<"error: couldn't load image: "<<SDL_GetError()<<"\n";
-        IMG_Load("assets/entityMissingTexture.png");
-    }
-    backgroundTexture=SDL_CreateTextureFromSurface(renderer, background);
-}
-
-void Engine::drawEntities(){
-    for(const auto& e:entities){
-        if(!e.isVisible)continue;
-        e.texture.backgroundRect->x=e.position.x*camera.scale+back1.backgroundRect->x;
-        e.texture.backgroundRect->y=e.position.y*camera.scale+back1.backgroundRect->y;
-        e.texture.backgroundRect->w=ENTITY_SEGMENT_SIZE*camera.scale;
-        e.texture.backgroundRect->h=ENTITY_SEGMENT_SIZE*camera.scale;
-        //SDL_RenderCopy(renderer, e.texture.backgroundTexture, NULL, e.texture.backgroundRect);
-        SDL_RenderCopyEx(renderer,
-                   e.texture.backgroundTexture,
-                   NULL,
-                   e.texture.backgroundRect,
-                   e.orientation,
-                   e.rotation_axis,
-                   SDL_FLIP_NONE);
-    }
-}
-
-void Engine::updateEntities(){
-    for(auto& e:entities){
-        e.update();
-    }
-}
-
-void Engine::loadSkybox(){
-    skybox.backgroundRect=new SDL_Rect;
-    skybox.backgroundRect->x=0;
-    skybox.backgroundRect->y=0;
-    skybox.backgroundRect->w=SKYBOX_WIDTH;
-    skybox.backgroundRect->h=SKYBOX_HEIGHT;
-
-    skybox.src="assets/background1.jpeg";
-
-    skybox.renderer=renderer;
-
-    skybox.loadImage();
-}
-
-void Engine::drawSkybox(){
-    SDL_RenderCopy(renderer, skybox.backgroundTexture, NULL , skybox.backgroundRect);
-}
-
-Background::Background(SDL_Renderer* renderer){
-    this->renderer=renderer;
-    backgroundRect=new SDL_Rect;
-    backgroundRect->x=0;
-    backgroundRect->y=0;
-    backgroundRect->w=ENTITY_SEGMENT_SIZE;
-    backgroundRect->h=ENTITY_SEGMENT_SIZE;
-    src="assets/missingTexture.png";
-
-    loadImage();
-}
-
-Background::Background(SDL_Renderer* renderer, int16_t x, int16_t y, uint16_t w, uint16_t h,const char* src){
-    this->renderer=renderer;
-    backgroundRect=new SDL_Rect;
-    backgroundRect->x=x;
-    backgroundRect->y=x;
-    backgroundRect->w=w;
-    backgroundRect->h=h;
-    this->src = src;
-
-    loadImage();
-}
-
-Background::Background(){
-
-}
-
-//TODO:
-//interfejsy
-//generalne uporzadkowanie

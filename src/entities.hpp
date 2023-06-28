@@ -10,7 +10,13 @@
 #include "texture.hpp"
 #include "log.hpp"
 
-struct Entity{
+struct EntityFlags{
+    bool isVisible;
+    bool isMovable;
+    bool isCollidable;
+};
+
+class Entity{
 public:
     vec2 position;
     vec2 velocity;
@@ -18,19 +24,17 @@ public:
     float128 orientation;
     float128 angularVelocity;
     SDL_Point* rotation_axis;
+    SDL_Renderer* renderer;
 
     Texture texture;
 
-    bool isVisible{1}, isMovable{1}, isCollidable{1};
+    EntityFlags flags;
 
-    void move();
-    void rotate(float128 rm);
+    void render();
 
-    void update();
-
-
+    Entity();
     Entity(SDL_Renderer* renderer);
-    Entity(SDL_Renderer* renderer, vec2 position, vec2 velocity, vec2 acceleration, float128 orientation, const char* txtpath, bool isVisible, bool isMovable, bool isCollidable);
+    Entity(SDL_Renderer* renderer, vec2 position, vec2 velocity, vec2 acceleration, float128 orientation, const char* txtpath, EntityFlags flags);
     //{10,20}
 };
 

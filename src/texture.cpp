@@ -33,8 +33,7 @@ void Texture::loadImage(const char* src){
 
 
 Texture::Texture(){
-    renderer=nullptr;
-    log("Empty Texture created");
+    renderer;
 }
 
 Texture::Texture(SDL_Renderer* renderer){
@@ -53,8 +52,7 @@ Texture::Texture(SDL_Renderer* renderer, int16_t x, int16_t y, uint16_t w, uint1
 }
 
 Texture::~Texture(){
-    delete rectangle;
-    delete surface;
-    delete texture;
-    delete [] src;
+    // delete rectangle;
+    // delete surface;
+    // delete texture;
 }
