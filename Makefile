@@ -1,4 +1,4 @@
-SOURCES = main.cpp src/camera.cpp src/camera.hpp src/constants.hpp src/entities.cpp src/entities.hpp src/entity-background.cpp src/entity-background.hpp src/graphics.cpp src/graphics.hpp src/log.cpp src/log.hpp src/texture.cpp src/texture.hpp src/utils.cpp src/utils.hpp
+ENGINE_SOURCES = main.cpp src/engine/Engine.cpp src/engine/Engine.hpp src/engine/utils/log.cpp src/engine/utils/log.hpp src/engine/utils/sg_math.cpp src/engine/utils/sg_math.hpp
 
 LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
 
@@ -8,9 +8,9 @@ OUT = SPACEGAME
 
 
 all: clean
-	g++ $(SOURCES) $(LIBS) -o $(OUT) $(FLAG)
+	g++ $(ENGINE_SOURCES) $(LIBS) -o $(OUT) $(FLAG)
 prof: clean
-	g++ $(SOURCES) $(LIBS) -o $(OUT) -pg $(FLAG)
+	g++ $(ENGINE_SOURCES) $(LIBS) -o $(OUT) -pg $(FLAG)
 	./$(OUT)
 	gprof ./$(OUT) gmon.out > profOut.txt
 	less profOut.txt
