@@ -37,8 +37,8 @@ bool Engine::engineInit(){
         "SPACE GAME by PEDROS & KOYOTOS",
         SDL_WINDOWPOS_CENTERED, 
         SDL_WINDOWPOS_CENTERED, 
-        1000,
-        1000,
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT,
         SDL_WINDOW_SHOWN
     ); 
 
@@ -74,13 +74,29 @@ bool Engine::engineInit(){
 
     srand(time(NULL));
 
+    keyStateMap = initKeyStateMap();
+
+    camera.initCamera(0,0);
+
+    if(!rendererObject.initRenderer(renderer, windowRectangle)){
+        logErr("couldn't init rendererObject");
+        exit(0);
+    }
+
     wasInitialised=true;
     return true;
 }
 
 void Engine::eventHandler(bool& run){
     SDL_Event event;
+
+    log(std::to_string(camera.velocity.y).c_str());
+    camera.move();
+
     while (SDL_PollEvent(&event)) {
+
+        bool ok;
+
         switch (event.type) {
         case SDL_QUIT:
             run = false;
@@ -88,19 +104,90 @@ void Engine::eventHandler(bool& run){
         break;
 
         case SDL_KEYDOWN:
-            switch(event.key.keysym.sym){
-                case SDLK_q:
-                    run = false;
-                    log("quitting");
-                break;
+            ok = setState(keyStateMap, event.key.keysym.sym, true);
+
+            if(!ok){
+                char err[100];
+                sprintf(err, "couldn't set key [%d] state", event.key.keysym.sym);
+                logErr(err);
             }
+
+        break;
+
+        case SDL_KEYUP:
+            ok = setState(keyStateMap, event.key.keysym.sym, false);
+            
+            if(!ok){
+                char err[100];
+                sprintf(err, "couldn't set key [%d] state", event.key.keysym.sym);
+                logErr(err);
+            }
+        break;
+
+        case SDL_MOUSEWHEEL:
+            if(event.wheel.y > 0){
+                camera.rescale(1.05);
+            }else if(event.wheel.y < 0 ){
+                camera.rescale(0.95);
+            }
+        
         }
+
+
+
+        keyHandler(run);
+    }
+}
+
+void Engine::keyHandler(bool& run){
+    for(const auto& [key, state] : keyStateMap){
+        if(key==SDLK_q && state==true){
+            log("quitting");
+            run=false;
+            return;
+        }
+        if(key==SDLK_w && state==true){
+            camera.velocity.y = -10;
+        }
+        if(key==SDLK_w && state==false){
+            camera.velocity.y = 0;
+        }
+        if(key==SDLK_s && state==true){
+            camera.velocity.y = 10;
+        }
+        if(key==SDLK_s && state==false){
+            camera.velocity.y = 0;
+            log("CHUJ");
+        }
+        if(key==SDLK_a && state==true){
+            camera.velocity.x=-10;
+        }
+        if(key==SDLK_a && state==false){
+            camera.velocity.x=0;
+        }
+        if(key==SDLK_d && state==true){
+            camera.velocity.x=10;
+        }
+        if(key==SDLK_d && state==false){
+            camera.velocity.x=0;
+        }
+        
+        /*
+            TUTAJ STWORZYSZ SOBIE LOGIKE PRZYCISKOW
+        */
     }
 }
 
 void Engine::mainLoop(){
     bool run=true;
     log("main loop started");
+
+    Texture txt;
+    if(!txt.initTexture(renderer, "")){
+        logErr("couldn't init texture");
+        exit(0);
+    }
+    
 
     while(run){
         int startLoop=SDL_GetTicks();
@@ -110,7 +197,7 @@ void Engine::mainLoop(){
 
         eventHandler(run);
 
-
+        rendererObject.renderTextureWithCamera(txt, camera);
 
         SDL_RenderPresent(renderer);
 
