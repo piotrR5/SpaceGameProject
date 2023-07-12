@@ -15,8 +15,6 @@ struct Texture{
     bool initTexture(SDL_Renderer* renderer, const char* src);
 
     bool loadTexture(const char* src);
-
-    
 };
 
 
