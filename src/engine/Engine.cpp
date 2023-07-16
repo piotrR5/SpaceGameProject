@@ -1,5 +1,4 @@
 #include "Engine.hpp"
-
 #ifdef __linux__ 
 
     //linux code goes here
@@ -80,6 +79,10 @@ bool Engine::engineInit(){
         logErr("couldn't init rendererObject");
         exit(0);
     }
+    if(!rendererBackground.initRenderer(renderer, windowRectangle)){
+        logErr("couldn't init rendererBackground");
+        exit(0);
+    }
 
     gui.initGui(renderer, "assets/menuTest.png",windowRectangle);
     Button b;
@@ -93,23 +96,15 @@ bool Engine::engineInit(){
 void Engine::mainLoop(){
     bool run=true;
     log("main loop started");
-
-    Texture txt;
-    if(!txt.initTexture(renderer, "")){
-        logErr("couldn't init texture");
-        exit(0);
-    }
-    
-
+    Planet testPlanet({10,10},"assets/planetTest.png",0,0,100);
     while(run){
         int startLoop=SDL_GetTicks();
-
+        
         SDL_RenderClear(renderer);
+        rendererObject.renderTextureWithCamera(testPlanet.generateTexture(renderer),camera);
 
         if(gui.visible==false)eventHandler(run);
         else gui.eventHandler(run);
-
-        rendererObject.renderTextureWithCamera(txt, camera);
 
         gui.renderGui();
 

@@ -25,6 +25,8 @@
 
 #include "gui/gui.hpp"
 
+#include "../../src/game/objectHandler.hpp"
+
 using std::cout;
 using std::endl;
 
@@ -40,6 +42,7 @@ private:
     SDL_Rect* windowRectangle;
 
     Renderer rendererObject;
+    Renderer rendererBackground;
 
     Camera camera;
 

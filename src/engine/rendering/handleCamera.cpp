@@ -5,7 +5,6 @@ void Camera::initCamera(float x, float y){
     camera.y=y;
     camera.w=1;
     camera.h=1;
-
     velocity = {0,0};
 }
 
