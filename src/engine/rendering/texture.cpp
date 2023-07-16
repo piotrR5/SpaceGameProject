@@ -1,17 +1,12 @@
 #include "texture.hpp"
 
-bool Texture::initTexture(SDL_Renderer* renderer, const char* src){
-    this->renderer=renderer;
-    if(this->renderer==nullptr){
-        logErr("renderer is nullptr");
-        return false;
-    }
+bool Texture::initTexture(const char* src){
     return loadTexture(src);
 }
 
 bool Texture::loadTexture(const char* src){
-    this->textureSurface = IMG_Load(src);
-    if(this->textureSurface == nullptr){
+    SDL_Surface* surface = IMG_Load(src);
+    if(surface == nullptr){
         if(src=="assets/missingTexture.png"){
             logErr("couldn't load missingTexture.png, quitting");
             exit(0);
@@ -21,8 +16,8 @@ bool Texture::loadTexture(const char* src){
         loadTexture("assets/missingTexture.png");
     }
     textureRectangle=new SDL_Rect;
-    textureRectangle->h = textureSurface->h;
-    textureRectangle->w = textureSurface->w;
+    textureRectangle->h = surface->h;
+    textureRectangle->w = surface->w;
     textureRectangle->x = 0;
     textureRectangle->y = 0;
 
@@ -31,7 +26,7 @@ bool Texture::loadTexture(const char* src){
         return false;
     }
 
-    textureTexture = SDL_CreateTextureFromSurface(renderer, textureSurface);
+    textureTexture = SDL_CreateTextureFromSurface(global.renderer, surface);
 
     if(textureTexture == nullptr){
         logErr("textureTexture is nullptr");
@@ -40,4 +35,10 @@ bool Texture::loadTexture(const char* src){
 
     return true;
 }
+
+bool Texture::initTexture(SDL_Texture* txt, SDL_Rect* rect){
+    this->textureTexture=txt;
+    this->textureRectangle=rect;
+}
+
 

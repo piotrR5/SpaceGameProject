@@ -11,11 +11,12 @@
 #include "texture.hpp"
 #include "handleCamera.hpp"
 
+#include "../globals.hpp"
+
 class Renderer{
-    SDL_Renderer* renderer;
     SDL_Rect* windowRectangle;
 public:
-    bool initRenderer(SDL_Renderer* renderer, SDL_Rect* windowRect);
+    bool initRenderer(SDL_Rect* windowRect);
 
     bool basicRenderTexture(Texture txt);
 

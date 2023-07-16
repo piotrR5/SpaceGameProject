@@ -1,8 +1,8 @@
-ENGINE = src/engine/Engine.cpp src/engine/eventHandlers.cpp src/engine/Engine.hpp
+ENGINE = src/engine/globals.hpp src/engine/Engine.cpp src/engine/eventHandlers.cpp src/engine/Engine.hpp
 
 GUI = src/engine/gui/gui.cpp src/engine/gui/gui.hpp
 
-RENDERING = src/engine/rendering/texture.cpp src/engine/rendering/texture.hpp src/engine/rendering/render.cpp src/engine/rendering/render.hpp src/engine/rendering/handleCamera.cpp src/engine/rendering/handleCamera.hpp
+RENDERING = src/engine/rendering/texture.cpp src/engine/rendering/texture.hpp src/engine/rendering/render.cpp src/engine/rendering/render.hpp src/engine/rendering/handleCamera.cpp src/engine/rendering/handleCamera.hpp src/engine/rendering/text.cpp src/engine/rendering/text.hpp
 
 UTILS = src/engine/utils/sg_math.cpp src/engine/utils/sg_math.hpp src/engine/utils/log.cpp src/engine/utils/log.hpp src/engine/utils/config.hpp
 
