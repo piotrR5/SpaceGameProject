@@ -10,20 +10,41 @@ std::string dateAndTime(){
     ret.erase(ret.begin()+19, ret.end());
     ret.erase(ret.begin(), ret.begin()+11);
 
-    return ret;
+    return "["+ret+"]: ";
 }
 
 void log(const char* m){
     std::string msg(m);
-    std::cout<<"["<<dateAndTime()<<"]: "<<msg<<"\n";
+    msg=dateAndTime()+msg;
+    msg+='\n';
+    std::cout<<msg;
 }
 
-void logErr(const char* m){
+void _logErr(const char* m){
     std::string msg(m);
-    std::cout<<"["<<dateAndTime()<<"]: "<<red<<"Error: "<<def<<msg<<"\n";
+    msg=def+msg;
+    msg="Error: "+msg;
+    msg=red+msg;
+    msg+='\n';
+    std::cout<<msg;
 }
 
 void logOK(const char* m){
     std::string msg(m);
-    std::cout<<"["<<dateAndTime()<<"]: "<<green<<"[OK] "<<def<<msg<<"\n";
+    msg=def+msg;
+    msg="OK: "+msg;
+    msg=green+msg;
+    msg=dateAndTime()+msg;
+    msg+='\n';
+    std::cout<<msg;
+}
+
+void _panic(const char* m){
+    std::string msg(m);
+    msg=def+msg;
+    msg="Panic: "+msg;
+    msg=red+msg;
+    msg+='\n';
+    std::cout<<msg;
+    exit(0);
 }

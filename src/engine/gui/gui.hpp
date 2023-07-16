@@ -9,18 +9,21 @@
 #include "../rendering/texture.hpp"
 #include "../utils/config.hpp"
 #include "../rendering/render.hpp"
+#include "../rendering/text.hpp"
+#include "../globals.hpp"
 
 #include <vector>
 #include <tuple>
 
+
 struct Button{
-    const char* label;
     Texture texture;
+    Texture label;
     SDL_Rect* parentRect;
     void (*onClickHandler)(SDL_Event event);
     void (*onReleaseHandler)(SDL_Event event);
 
-    bool initButton(SDL_Renderer* renderer, const char* label, const char* src, SDL_Rect* parentRect, void (*onClickHandler)(SDL_Event event),void (*onReleaseHandler)(SDL_Event event), int x, int y, int w, int h);
+    bool initButton(const char* label, const char* src, SDL_Rect* parentRect, void (*onClickHandler)(SDL_Event event),void (*onReleaseHandler)(SDL_Event event), int x, int y, int w, int h);
 
     void defaultButtonOnClick(SDL_Event event);
     void defaultButtonOnRelease(SDL_Event event);
@@ -34,13 +37,13 @@ struct Label{
 
 struct Gui{
     bool visible;
-    std::tuple<Texture, int, int> guiBackground;
+    int x,y;
+    Texture guiBackground;
     std::vector<Button>buttons;
-    // std::map<Label, int, int>labels;
-    std::vector<std::tuple<Texture, int, int>>images;
+    SDL_Rect* windowRect;
 
 
-    bool initGui(SDL_Renderer* renderer, const char* src, SDL_Rect* winRect);
+    bool initGui(const char* src, SDL_Rect* windowRect, int x, int y);
     void addButton(Button btn);
     void addTexture(Texture txt, int x, int y);
 
@@ -56,8 +59,6 @@ struct Gui{
     
 
 private:
-    SDL_Rect* windowRect;
-    SDL_Renderer* renderer;
     bool inlineTextureRenderer();    
 };
 

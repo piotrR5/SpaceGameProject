@@ -1,17 +1,16 @@
 #include "gui.hpp"
 
-bool Gui::initGui(SDL_Renderer* renderer, const char* src, SDL_Rect* winRect){
-    if(renderer == nullptr){
+bool Gui::initGui(const char* src, SDL_Rect* windowRect, int x, int y){
+    if(global.renderer == nullptr){
         logErr("renderer is nullptr");
         exit(0);
     }
-    std::get<0>(guiBackground).initTexture(renderer, src);
-    std::get<0>(guiBackground).textureRectangle->x=50;
-    std::get<0>(guiBackground).textureRectangle->y=50;
+    guiBackground.initTexture(src);
+    this->x=x;
+    this->y=y;
     visible=false;
 
-    this->renderer=renderer;
-    this->windowRect=winRect;
+    this->windowRect=windowRect;
 
     windowRect->h=MENU_HEIGHT;
     windowRect->w=MENU_WIDTH;
@@ -23,19 +22,15 @@ void Gui::addButton(Button btn){
     buttons.push_back(btn);
 }
 
-void Gui::addTexture(Texture txt, int x, int y){
-    images.push_back({txt, x, y});
-}
-
 bool Gui::inlineTextureRenderer(){
-    const auto& [t, x, y] = guiBackground;
+    auto& t=guiBackground;
     SDL_Rect* foo=new SDL_Rect;
     foo->x=t.textureRectangle->x;
     foo->y=t.textureRectangle->y;
     foo->w=t.textureRectangle->w;
     foo->h=t.textureRectangle->h;
 
-    SDL_RenderCopy(renderer, t.textureTexture, foo, windowRect);
+    SDL_RenderCopy(global.renderer, t.textureTexture, foo, windowRect);
 
     for(auto b : buttons){
         b.renderButton();
@@ -160,20 +155,19 @@ void Button::defaultButtonOnRelease(SDL_Event event){
 }
 
 
-bool Button::initButton(SDL_Renderer* renderer, const char* label, const char* src, SDL_Rect* parentRect, void (*onClickHandler)(SDL_Event event),void (*onReleaseHandler)(SDL_Event event), int x, int y, int w, int h){
-    if(this->texture.initTexture(renderer, src)==false){
+bool Button::initButton(const char* label, const char* src, SDL_Rect* parentRect, void (*onClickHandler)(SDL_Event event),void (*onReleaseHandler)(SDL_Event event), int x, int y, int w, int h){
+    if(this->texture.initTexture(src)==false){
         logErr("couldn't initialise a texture");
         return false;
     }
-    this->label=label;
+    this->label=textureWithText(label, SDL_Color{255,255,255,0});
     this->onClickHandler=onClickHandler;
     if(this->onClickHandler==nullptr){
-        log("onClickHandler is nullptr");
+        logErr("onClickHandler is nullptr");
     }
     this->onReleaseHandler=onReleaseHandler;
     if(this->onReleaseHandler==nullptr){
         logErr("onReleaseHandler is nullptr");
-
     }
     this->parentRect=parentRect;
     this->texture.textureRectangle->w=w;
@@ -181,8 +175,9 @@ bool Button::initButton(SDL_Renderer* renderer, const char* label, const char* s
     this->texture.textureRectangle->x=x+w;
     this->texture.textureRectangle->y=y+h;
 
+    return true;
 }
 
 void Button::renderButton(){
-    SDL_RenderCopy(texture.renderer, texture.textureTexture, parentRect, texture.textureRectangle);
+    SDL_RenderCopy(global.renderer, texture.textureTexture, parentRect, texture.textureRectangle);
 }

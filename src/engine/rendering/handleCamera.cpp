@@ -7,6 +7,7 @@ void Camera::initCamera(float x, float y){
     camera.h=1;
 
     velocity = {0,0};
+    logOK("camera created");
 }
 
 SDL_Rect Camera::handleCameraPerspective(SDL_Rect inputRectangle){

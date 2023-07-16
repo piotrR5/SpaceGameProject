@@ -22,22 +22,28 @@
 #include "rendering/texture.hpp"
 #include "rendering/render.hpp"
 #include "rendering/handleCamera.hpp"
+#include "rendering/text.hpp"
+#include "globals.hpp"
 
 #include "gui/gui.hpp"
 
 using std::cout;
 using std::endl;
 
+
+
 struct Engine{
 private:
     bool wasInitialised;
 
+    
 
     uint16_t fps, desiredDT;
 
     SDL_Window* window;
-    SDL_Renderer* renderer;
     SDL_Rect* windowRectangle;
+
+    TTF_Font* font;
 
     Renderer rendererObject;
 
