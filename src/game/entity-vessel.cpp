@@ -33,6 +33,6 @@ Vessel::Vessel(int pthR, int x, int y, uint8_t arm, std::vector<part> segm, cons
         break;
     }
     segments = segm;
-    shipTexture.initTexture(renderer,txtPath);
+    shipTexture.initTexture(txtPath);
     shipTexture.loadTexture(txtPath);
 }
