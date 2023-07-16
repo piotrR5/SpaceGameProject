@@ -46,11 +46,14 @@ void Planet::modifyFlags(uint8_t flag)
         break;
     }
 }
-Texture Planet::generateTexture(SDL_Renderer* rend)
+void Planet::generateTexture(SDL_Renderer* rend)
 {   
     planetTextureGenerated.initTexture(rend,planetTexture);
     planetTextureGenerated.loadTexture(planetTexture);
     planetTextureGenerated.textureRectangle->x=posX;
     planetTextureGenerated.textureRectangle->y=posY;
+}
+Texture Planet::getTexture()
+{
     return planetTextureGenerated;
 }

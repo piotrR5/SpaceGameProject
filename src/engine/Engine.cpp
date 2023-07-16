@@ -97,11 +97,12 @@ void Engine::mainLoop(){
     bool run=true;
     log("main loop started");
     Planet testPlanet({10,10},"assets/planetTest.png",0,0,100);
+    testPlanet.generateTexture(renderer);
     while(run){
         int startLoop=SDL_GetTicks();
         
         SDL_RenderClear(renderer);
-        rendererObject.renderTextureWithCamera(testPlanet.generateTexture(renderer),camera);
+        rendererObject.renderTextureWithCamera(testPlanet.getTexture(),camera);
 
         if(gui.visible==false)eventHandler(run);
         else gui.eventHandler(run);
