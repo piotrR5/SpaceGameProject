@@ -6,6 +6,8 @@ RENDERING = src/engine/rendering/texture.cpp src/engine/rendering/texture.hpp sr
 
 UTILS = src/engine/utils/sg_math.cpp src/engine/utils/sg_math.hpp src/engine/utils/log.cpp src/engine/utils/log.hpp src/engine/utils/config.hpp
 
+GAME = src/game/entity-vessel.hpp src/game/entity-vessel.cpp src/game/entity-planet.hpp src/game/entity-planet.cpp src/game/entity-projectile.hpp src/game/entity-projectile.cpp src/game/objectHandler.hpp src/game/objectHandler.cpp
+
 MAIN = main.cpp
 
 LIBS = -lSDL2 -lSDL2_image -lSDL2_ttf
@@ -16,9 +18,9 @@ OUT = SPACEGAME
 
 
 all: clean
-	g++ $(MAIN) $(ENGINE) $(RENDERING) $(UTILS) $(GUI) $(LIBS) -o $(OUT) $(FLAG)
+	g++ $(MAIN) $(ENGINE) $(RENDERING) $(UTILS) $(GAME) $(GUI) $(LIBS) -o $(OUT) $(FLAG)
 prof: clean
-	g++ $(MAIN) $(ENGINE) $(RENDERING) $(UTILS) $(GUI) $(LIBS) -o $(OUT) -pg $(FLAG)
+	g++ $(MAIN) $(ENGINE) $(RENDERING) $(UTILS) $(GAME) $(GUI) $(LIBS) -o $(OUT) -pg $(FLAG)
 	./$(OUT)
 	gprof ./$(OUT) gmon.out > profOut.txt
 	less profOut.txt

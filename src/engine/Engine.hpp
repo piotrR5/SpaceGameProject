@@ -27,6 +27,8 @@
 
 #include "gui/gui.hpp"
 
+#include "../../src/game/objectHandler.hpp"
+
 using std::cout;
 using std::endl;
 
@@ -46,6 +48,7 @@ private:
     TTF_Font* font;
 
     Renderer rendererObject;
+    Renderer rendererBackground;
 
     Camera camera;
 
