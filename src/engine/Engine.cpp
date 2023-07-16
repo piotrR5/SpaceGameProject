@@ -84,7 +84,7 @@ bool Engine::engineInit(){
     }else{
         logOK("rendererObject created");
     }
-    if(!rendererBackground.initRenderer(renderer, windowRectangle)){
+    if(!rendererBackground.initRenderer(windowRectangle)){
         logErr("couldn't init rendererBackground");
         exit(0);
     }
