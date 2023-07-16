@@ -26,7 +26,7 @@ class Planet
     Planet(std::pair<int,int> position,const char* texturePath, int grav, int elf, int radius); // Specific constructor
     std::pair<int,int> getPosition();
     int getRadius();
-    void generateTexture(SDL_Renderer* rend);
+    void generateTexture();
     Texture getTexture();
     void modifyFlags(uint8_t flag);
 };
