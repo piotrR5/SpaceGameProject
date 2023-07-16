@@ -8,6 +8,8 @@
 #include "../utils/log.hpp"
 #include "../utils/config.hpp"
 #include "../utils/sg_math.hpp"
+#include "../globals.hpp"
+
 
 struct Camera{
     SDL_FRect camera;

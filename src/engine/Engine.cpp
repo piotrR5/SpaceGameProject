@@ -29,6 +29,8 @@ Engine::Engine(){
 bool Engine::engineInit(){
     SDL_Init(SDL_INIT_EVERYTHING);
     TTF_Init();
+    SDL_BlendMode(SDL_BLENDMODE_BLEND);
+    initTTF_Font("assets/fonts/Oswald-Regular.ttf");
 
     fps=60;
     desiredDT=1000/fps;
@@ -42,16 +44,18 @@ bool Engine::engineInit(){
         SDL_WINDOW_SHOWN
     ); 
 
+
     if(window==nullptr){
-        logErr("Window is nullptr");
-        return false;
+        panic("Window is nullptr");
+    }else{
+        logOK("Window created");
     }
 
-    renderer=SDL_CreateRenderer(window, -1, 0);
-
-    if(renderer==nullptr){
-        logErr("renderer is nullptr");
-        return false;
+    global.renderer= (SDL_CreateRenderer(window, -1, 0));
+    if(global.renderer==nullptr){
+        panic("renderer is nullptr");
+    }else{
+        logOK("renderer created");
     }
 
     SDL_Surface* icon = IMG_Load("assets/icons/icon.png");
@@ -68,22 +72,23 @@ bool Engine::engineInit(){
         logErr("windowRectangle is nullptr");
     }
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-    SDL_RenderPresent(renderer);    
+    SDL_SetRenderDrawColor(global.renderer, 0, 0, 0, 255);
+    SDL_RenderClear(global.renderer);
+    SDL_RenderPresent(global.renderer);    
 
     srand(time(NULL));
 
     camera.initCamera(0,0);
 
-    if(!rendererObject.initRenderer(renderer, windowRectangle)){
-        logErr("couldn't init rendererObject");
-        exit(0);
+    if(!rendererObject.initRenderer(windowRectangle)){
+        panic("couldn't init rendererObject");
+    }else{
+        logOK("rendererObject created");
     }
 
-    gui.initGui(renderer, "assets/menuTest.png",windowRectangle);
+    gui.initGui("assets/alphaTest.png",windowRectangle, 0, 0);
     Button b;
-    b.initButton(renderer, "button", "assets/button.jpg", std::get<0>(gui.guiBackground).textureRectangle, nullptr, nullptr, 10, 10, 100, 50);
+    b.initButton("button", "assets/button.jpg", gui.guiBackground.textureRectangle, nullptr, nullptr, 10, 10, 100, 50);
     gui.addButton(b);
 
     wasInitialised=true;
@@ -95,7 +100,7 @@ void Engine::mainLoop(){
     log("main loop started");
 
     Texture txt;
-    if(!txt.initTexture(renderer, "")){
+    if(!txt.initTexture("assets/debug1000x1000.png")){
         logErr("couldn't init texture");
         exit(0);
     }
@@ -104,7 +109,7 @@ void Engine::mainLoop(){
     while(run){
         int startLoop=SDL_GetTicks();
 
-        SDL_RenderClear(renderer);
+        SDL_RenderClear(global.renderer);
 
         if(gui.visible==false)eventHandler(run);
         else gui.eventHandler(run);
@@ -113,7 +118,7 @@ void Engine::mainLoop(){
 
         gui.renderGui();
 
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(global.renderer);
 
         fpsHandler(startLoop);
     }
