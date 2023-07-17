@@ -76,7 +76,6 @@ void Engine::onMouseClick(SDL_Event event, bool& run){
     log("Mouse button clicked");
     int mouse_x,mouse_y;
     SDL_GetMouseState(&mouse_x, &mouse_y);
-    isObjectClicked(mouse_x,mouse_y);
 }
 
 void Engine::onMouseRelease(SDL_Event event, bool& run){

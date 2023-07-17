@@ -11,7 +11,6 @@ class Planet
 {
     private : 
     int posX, posY;
-    const char* planetTexture;
     Texture planetTextureGenerated;
     int planetRadius;
     int planetGravity;

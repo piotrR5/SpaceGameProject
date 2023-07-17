@@ -1,9 +1,6 @@
 #include "../../src/game/objectHandler.hpp"
 
-vector<Planet> planets;
-vector<Vessel> vessels;
-
-void searchIfPlanetClicked(int x, int y, int& id)
+void ObjectHandler::searchIfPlanetClicked(int x, int y, int& id)
 {
     int distance = 0;
     for(auto& k : planets)
@@ -18,10 +15,10 @@ void searchIfPlanetClicked(int x, int y, int& id)
     id=-1;
     return;
 }
-bool isObjectClicked(int mouseX, int mouseY)
+bool ObjectHandler::isObjectClicked(int mouseX, int mouseY)
 {
     int planetFoundId = 0;
-    thread planetCalc(searchIfPlanetClicked,mouseX,mouseY,std::ref(planetFoundId));
+    thread planetCalc([=] {searchIfPlanetClicked(mouseX,mouseY,&planetFoundId);});
     planetCalc.join();
     if(planetFoundId==-1)
     {
@@ -34,4 +31,23 @@ bool isObjectClicked(int mouseX, int mouseY)
         return 1;
     }
     return 0;
+}
+void ObjectHandler::addObject(auto& object)
+{
+    switch(typeid(object))
+    {
+        case Planet :
+        planets.push_back(object);
+        log("Planet added to vector.");
+        break;
+        default : 
+        logErr("Wrong object type !");
+        break;
+    }
+}
+ObjectHandler::ObjectHandler()
+{
+    planets.clear();
+    vessels.clear();
+    log("ObjectHandler created correctly.");
 }

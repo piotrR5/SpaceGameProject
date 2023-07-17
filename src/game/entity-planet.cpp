@@ -12,10 +12,13 @@ Planet::Planet(std::pair<int,int> position,const char* texturePath, int grav, in
 {
     posX=position.first;
     posY=position.second;
-    planetTexture = texturePath;
     planetGravity = grav;
     planetRadius = radius;
     planetElectromagneticField = elf;
+    planetTextureGenerated.initTexture(texturePath);
+    planetTextureGenerated.loadTexture(texturePath);
+    planetTextureGenerated.textureRectangle->x=posX;
+    planetTextureGenerated.textureRectangle->y=posY;
 }
 std::pair<int,int> Planet::getPosition()
 {
@@ -45,13 +48,6 @@ void Planet::modifyFlags(uint8_t flag)
         logErr("Wrong flag !");
         break;
     }
-}
-void Planet::generateTexture()
-{   
-    planetTextureGenerated.initTexture(planetTexture);
-    planetTextureGenerated.loadTexture(planetTexture);
-    planetTextureGenerated.textureRectangle->x=posX;
-    planetTextureGenerated.textureRectangle->y=posY;
 }
 Texture Planet::getTexture()
 {
