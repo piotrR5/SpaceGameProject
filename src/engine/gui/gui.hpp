@@ -25,11 +25,11 @@ struct Button{
 
     bool initButton(const char* label, const char* src, SDL_Rect* parentRect, void (*onClickHandler)(SDL_Event event),void (*onReleaseHandler)(SDL_Event event), int x, int y, int w, int h);
 
-    void defaultButtonOnClick(SDL_Event event);
-    void defaultButtonOnRelease(SDL_Event event);
-
     void renderButton();
 };
+
+void defaultButtonOnClick(SDL_Event event);
+void defaultButtonOnRelease(SDL_Event event);
 
 struct Label{
 

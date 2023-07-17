@@ -16,7 +16,6 @@ SDL_Rect Camera::handleCameraPerspective(SDL_Rect inputRectangle){
 
     outputRectangle.w=camera.w*inputRectangle.w;
     outputRectangle.h=camera.h*inputRectangle.h;
-
     return outputRectangle;
 }
 

@@ -122,7 +122,7 @@ void Gui::onMouseClick(SDL_Event event, bool& run){
         int x=b.texture.textureRectangle->x;
         int y=b.texture.textureRectangle->y;
         if(mousex >=x && mousex <=x+w && mousey >=y && mousey<=y+h){
-            b.defaultButtonOnClick(event);
+            (*b.onClickHandler)(event);
         }
     }
 }
@@ -137,7 +137,7 @@ void Gui::onMouseRelease(SDL_Event event, bool& run){
         int x=b.texture.textureRectangle->x;
         int y=b.texture.textureRectangle->y;
         if(mousex >=x && mousex <=x+w && mousey >=y && mousey<=y+h){
-            b.defaultButtonOnRelease(event);
+            (*b.onReleaseHandler)(event);
         }
     }
 }
@@ -146,11 +146,11 @@ void Gui::onMouseScroll(SDL_Event event, bool& run){
 
 }
 
-void Button::defaultButtonOnClick(SDL_Event event){
+void defaultButtonOnClick(SDL_Event event){
     log("Button is being pressed");
 }
 
-void Button::defaultButtonOnRelease(SDL_Event event){
+void defaultButtonOnRelease(SDL_Event event){
     log("Button is being released");
 }
 
@@ -164,10 +164,12 @@ bool Button::initButton(const char* label, const char* src, SDL_Rect* parentRect
     this->onClickHandler=onClickHandler;
     if(this->onClickHandler==nullptr){
         logErr("onClickHandler is nullptr");
+        this->onClickHandler=&defaultButtonOnClick;
     }
     this->onReleaseHandler=onReleaseHandler;
     if(this->onReleaseHandler==nullptr){
         logErr("onReleaseHandler is nullptr");
+        this->onReleaseHandler=&defaultButtonOnRelease;
     }
     this->parentRect=parentRect;
     this->texture.textureRectangle->w=w;
