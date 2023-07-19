@@ -8,15 +8,14 @@ Planet::Planet()
     planetElectromagneticField = 0;
     planetGravity = 0;
 }
-Planet::Planet(std::pair<int,int> position,const char* texturePath, int grav, int elf, int radius)
+Planet::Planet(std::pair<int,int> position, int grav, int elf, int radius, Texture& txt)
 {
     posX=position.first;
     posY=position.second;
     planetGravity = grav;
     planetRadius = radius;
     planetElectromagneticField = elf;
-    planetTextureGenerated.initTexture(texturePath);
-    planetTextureGenerated.loadTexture(texturePath);
+    planetTextureGenerated = txt;
     planetTextureGenerated.textureRectangle->x=posX;
     planetTextureGenerated.textureRectangle->y=posY;
 }

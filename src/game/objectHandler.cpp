@@ -17,8 +17,8 @@ void ObjectHandler::searchIfPlanetClicked(int x, int y, int& id)
 }
 bool ObjectHandler::isObjectClicked(int mouseX, int mouseY)
 {
-    int planetFoundId = 0;
-    thread planetCalc([=] {searchIfPlanetClicked(mouseX,mouseY,&planetFoundId);});
+    static int planetFoundId = 0;
+    thread planetCalc([=] {searchIfPlanetClicked(mouseX,mouseY,planetFoundId);});
     planetCalc.join();
     if(planetFoundId==-1)
     {
@@ -32,22 +32,26 @@ bool ObjectHandler::isObjectClicked(int mouseX, int mouseY)
     }
     return 0;
 }
-void ObjectHandler::addObject(auto& object)
+void ObjectHandler::addPlanet(Planet p)
 {
-    switch(typeid(object))
-    {
-        case Planet :
-        planets.push_back(object);
-        log("Planet added to vector.");
-        break;
-        default : 
-        logErr("Wrong object type !");
-        break;
-    }
+    planets.push_back(p);
+    log("Planet added to vector");
+}
+void ObjectHandler::addVessel(Vessel v)
+{
+    vessels.push_back(v);
+    log("Vessel added to vector");
 }
 ObjectHandler::ObjectHandler()
 {
     planets.clear();
     vessels.clear();
-    log("ObjectHandler created correctly.");
+    logOK("ObjectHandler created correctly.");
+}
+void ObjectHandler::addTexture(const char* src)
+{
+    Texture txt;
+    txt.initTexture(src);
+    txt.loadTexture(src);
+    textures.push_back(txt);
 }

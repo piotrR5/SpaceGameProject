@@ -101,17 +101,19 @@ bool Engine::engineInit(){
 void Engine::mainLoop(){
     bool run=true;
     log("main loop started");
-    ObjectHandler OH;
-    Planet testPlanet({0,0},"assets/planetTest.png",0,0,10);
-    OH.addObject(testPlanet);
+    OH.addTexture("assets/planetTest.png");
     while(run){
         int startLoop=SDL_GetTicks();
 
         SDL_RenderClear(global.renderer);
-        rendererObject.renderTextureWithCamera(testPlanet.getTexture(),camera);
 
         if(gui.visible==false)eventHandler(run);
         else gui.eventHandler(run);
+
+        for(auto& k : OH.planets)
+        {
+            rendererObject.renderTextureWithCamera(k.getTexture(),camera);
+        }
 
         gui.renderGui();
 
