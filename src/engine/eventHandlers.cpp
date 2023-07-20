@@ -76,15 +76,8 @@ void Engine::onMouseClick(SDL_Event event, bool& run){
     log("Mouse button clicked");
     int mouse_x,mouse_y;
     SDL_GetMouseState(&mouse_x, &mouse_y);
-    mouse_x+=camera.position.x;
-    mouse_y+=camera.position.y;
-    float mx = mouse_x*=camera.scale;
-    float my = mouse_y*=camera.scale;
-    mouse_x-=WINDOW_WIDTH/2;
-    mouse_y-=WINDOW_HEIGHT/2;
-    Planet testPlanet({mx,my},0,0,0,OH.textures[0]);
-    OH.addPlanet(testPlanet);
-    //OH.isObjectClicked(mouse_x, mouse_y);
+    vec2 mouseInGamePos = camera.ConvertToWorldCoords({mouse_x,mouse_y});
+    OH.isObjectClicked(mouse_x, mouse_y);
 }
 
 void Engine::onMouseRelease(SDL_Event event, bool& run){

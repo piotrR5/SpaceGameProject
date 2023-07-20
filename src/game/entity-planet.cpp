@@ -8,18 +8,20 @@ Planet::Planet()
     planetElectromagneticField = 0;
     planetGravity = 0;
 }
-Planet::Planet(std::pair<int,int> position, int grav, int elf, int radius, Texture& txt)
+Planet::Planet(std::pair<int,int> position, int grav, int elf, int radius,const Texture& txt)
 {
     posX=position.first;
     posY=position.second;
     planetGravity = grav;
     planetRadius = radius;
     planetElectromagneticField = elf;
-    planetTextureGenerated = txt;
+    SDL_Rect* temp = new SDL_Rect;
+    *temp=*(txt.textureRectangle);
+    planetTextureGenerated.initTexture(txt.textureTexture, temp);
     planetTextureGenerated.textureRectangle->x=posX;
     planetTextureGenerated.textureRectangle->y=posY;
 }
-std::pair<int,int> Planet::getPosition()
+vec2 Planet::getPosition()
 {
     return {posX,posY};
 }

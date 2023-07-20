@@ -13,5 +13,4 @@ struct vec2{
 struct matrix22{
     float xi, yi, xj, yj;
 };
-
 #endif

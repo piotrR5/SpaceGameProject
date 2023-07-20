@@ -1,7 +1,8 @@
 #ifndef PROJECTILE
 #define PROJECTILE
 
-#include "../utils/sg_math.hpp"
+#include "../engine/utils/sg_math.hpp"
+#include "../engine/rendering/texture.hpp"
 
 struct Projectile
 {

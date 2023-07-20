@@ -5,7 +5,7 @@ void ObjectHandler::searchIfPlanetClicked(int x, int y, int& id)
     int distance = 0;
     for(auto& k : planets)
     {
-        distance = pow((x-k.getPosition().first),2)+pow((y-k.getPosition().second),2);
+        distance = pow((x-k.getPosition().x),2)+pow((y-k.getPosition().y),2);
         if(distance<pow(k.getRadius(),2))
         {
             return;
@@ -18,8 +18,9 @@ void ObjectHandler::searchIfPlanetClicked(int x, int y, int& id)
 bool ObjectHandler::isObjectClicked(int mouseX, int mouseY)
 {
     static int planetFoundId = 0;
-    thread planetCalc([=] {searchIfPlanetClicked(mouseX,mouseY,planetFoundId);});
-    planetCalc.join();
+    //thread planetCalc([=] {searchIfPlanetClicked(mouseX,mouseY,planetFoundId);});
+    searchIfPlanetClicked(mouseX,mouseY,planetFoundId);
+    //planetCalc.join();
     if(planetFoundId==-1)
     {
         log("Planet isn't clicked.");
