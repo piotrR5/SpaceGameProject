@@ -12,8 +12,9 @@
 
 
 struct Camera{
-    SDL_FRect camera;
-    vec2 velocity;
+    vec2 position={0,0};
+    vec2 velocity={0,0};
+    float scale=1;
 
     void initCamera(float, float);
 

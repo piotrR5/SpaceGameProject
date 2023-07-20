@@ -102,6 +102,14 @@ void Engine::mainLoop(){
     bool run=true;
     log("main loop started");
     OH.addTexture("assets/planetTest.png");
+
+    Texture test, foo;
+    test.initTexture("assets/missingTexture.png");
+    foo.initTexture("assets/planetTest.png");
+
+    foo.textureRectangle->x = 200;
+    foo.textureRectangle->y = 200;
+
     while(run){
         int startLoop=SDL_GetTicks();
 
@@ -110,10 +118,13 @@ void Engine::mainLoop(){
         if(gui.visible==false)eventHandler(run);
         else gui.eventHandler(run);
 
-        for(auto& k : OH.planets)
-        {
-            rendererObject.renderTextureWithCamera(k.getTexture(),camera);
-        }
+        // for(auto& k : OH.planets)
+        // {
+        //     rendererObject.renderTextureWithCamera(k.getTexture(),camera);
+        // }
+
+        rendererObject.renderTextureWithCamera(test, camera);
+        rendererObject.renderTextureWithCamera(foo, camera);
 
         gui.renderGui();
 
