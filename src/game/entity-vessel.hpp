@@ -36,13 +36,12 @@ class Vessel
 {
     int pathFindingRadius;
     int pos_x,pos_y;
-    const char* texture;
     enum armorType{light,medium,heavy,shield};
     std::vector<part> segments;
     Texture shipTexture;
 
     Vessel(); // Generic constructor
-    Vessel(int pthR, int x, int y, uint8_t arm, std::vector<part> segm, const char* txtPath,SDL_Renderer* renderer); // Specfific constructor
+    Vessel(int pthR, int x, int y, uint8_t arm, std::vector<part> segm, Texture& txt, SDL_Renderer* renderer); // Specfific constructor
 };
 
 #endif
