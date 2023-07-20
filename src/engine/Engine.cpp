@@ -16,7 +16,6 @@
 #endif
 
 Engine::Engine(){
-    log("Engine initialization started");
     bool ok=engineInit();
     if(ok)logOK("Engine initialized");
     else{
