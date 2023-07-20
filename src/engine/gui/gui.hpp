@@ -17,13 +17,15 @@
 
 
 struct Button{
+    Texture background;
+    Texture backgroundClicked;
     Texture texture;
     Texture label;
     SDL_Rect* parentRect;
     void (*onClickHandler)(SDL_Event event);
     void (*onReleaseHandler)(SDL_Event event);
 
-    bool initButton(const char* label, const char* src, SDL_Rect* parentRect, void (*onClickHandler)(SDL_Event event),void (*onReleaseHandler)(SDL_Event event), int x, int y, int w, int h);
+    bool initButton(const char* label, const char* t, const char* tClicked, SDL_Rect* parentRect, void (*onClickHandler)(SDL_Event event),void (*onReleaseHandler)(SDL_Event event), int x, int y, int w, int h);
 
     void defaultButtonOnClick(SDL_Event event);
     void defaultButtonOnRelease(SDL_Event event);

@@ -8,7 +8,7 @@
 #include "entity-planet.hpp"
 #include "entity-vessel.hpp"
 #include "entity-projectile.hpp"
-#include "../../src/engine/utils/log.hpp"
+#include "../engine/utils/log.hpp"
 
 class ObjectHandler
 {

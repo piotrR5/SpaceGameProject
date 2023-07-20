@@ -147,28 +147,38 @@ void Gui::onMouseScroll(SDL_Event event, bool& run){
 }
 
 void Button::defaultButtonOnClick(SDL_Event event){
+    texture.textureTexture=backgroundClicked.textureTexture;
     log("Button is being pressed");
 }
 
 void Button::defaultButtonOnRelease(SDL_Event event){
+    texture.textureTexture=background.textureTexture;
     log("Button is being released");
 }
 
 
-bool Button::initButton(const char* label, const char* src, SDL_Rect* parentRect, void (*onClickHandler)(SDL_Event event),void (*onReleaseHandler)(SDL_Event event), int x, int y, int w, int h){
-    if(this->texture.initTexture(src)==false){
+bool Button::initButton(const char* label, const char* t, const char* tClicked, SDL_Rect* parentRect, void (*onClickHandler)(SDL_Event event),void (*onReleaseHandler)(SDL_Event event), int x, int y, int w, int h){
+    if(this->background.initTexture(t)==false){
         logErr("couldn't initialise a texture");
         return false;
     }
+    if(this->backgroundClicked.initTexture(tClicked)==false){
+        logErr("couldn't initialise a texture");
+        return false;
+    }
+    this->texture=background;
+
     this->label=textureWithText(label, SDL_Color{255,255,255,0});
     this->onClickHandler=onClickHandler;
     if(this->onClickHandler==nullptr){
         logErr("onClickHandler is nullptr");
     }
+
     this->onReleaseHandler=onReleaseHandler;
     if(this->onReleaseHandler==nullptr){
         logErr("onReleaseHandler is nullptr");
     }
+
     this->parentRect=parentRect;
     this->texture.textureRectangle->w=w;
     this->texture.textureRectangle->h=h;
@@ -179,5 +189,5 @@ bool Button::initButton(const char* label, const char* src, SDL_Rect* parentRect
 }
 
 void Button::renderButton(){
-    SDL_RenderCopy(global.renderer, texture.textureTexture, parentRect, texture.textureRectangle);
+    SDL_RenderCopy(global.renderer, texture.textureTexture, nullptr, texture.textureRectangle);
 }

@@ -38,8 +38,8 @@ bool Engine::engineInit(){
         "SPACE GAME by PEDROS & KOYOTOS",
         SDL_WINDOWPOS_CENTERED, 
         SDL_WINDOWPOS_CENTERED, 
-        WINDOW_WIDTH,
-        WINDOW_HEIGHT,
+        global.windowWidth,
+        global.windowHeight,
         SDL_WINDOW_SHOWN
     ); 
 
@@ -91,7 +91,7 @@ bool Engine::engineInit(){
 
     gui.initGui("assets/alphaTest.png",windowRectangle, 0, 0);
     Button b;
-    b.initButton("button", "assets/button.jpg", gui.guiBackground.textureRectangle, nullptr, nullptr, 10, 10, 100, 50);
+    b.initButton("button", "assets/button.jpg", "assets/missingTexture.png", gui.guiBackground.textureRectangle, nullptr, nullptr, 10, 10, 100, 50);
     gui.addButton(b);
 
     wasInitialised=true;
@@ -105,10 +105,12 @@ void Engine::mainLoop(){
 
     Texture test, foo;
     test.initTexture("assets/missingTexture.png");
-    foo.initTexture("assets/planetTest.png");
+    foo = textureWithText("chuj", SDL_Color{255,255,255,255});
 
     foo.textureRectangle->x = 200;
     foo.textureRectangle->y = 200;
+
+
 
     while(run){
         int startLoop=SDL_GetTicks();

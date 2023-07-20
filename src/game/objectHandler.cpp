@@ -1,4 +1,4 @@
-#include "../../src/game/objectHandler.hpp"
+#include "objectHandler.hpp"
 
 void ObjectHandler::searchIfPlanetClicked(int x, int y, int& id)
 {

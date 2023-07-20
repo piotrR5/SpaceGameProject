@@ -1,5 +1,5 @@
 #include "entity-vessel.hpp"
-#include "../../src/engine/utils/log.hpp"
+#include "../engine/utils/log.hpp"
 #include <vector>
 
 Vessel::Vessel()

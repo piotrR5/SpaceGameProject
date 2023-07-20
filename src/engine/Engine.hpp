@@ -26,6 +26,7 @@
 #include "globals.hpp"
 
 #include "gui/gui.hpp"
+#include "rendering/text.hpp"
 
 #include "../../src/game/objectHandler.hpp"
 

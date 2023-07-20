@@ -22,6 +22,14 @@ public:
     }
     SDL_Renderer* renderer;
     TTF_Font* font;
+
+    int windowWidth;
+    int windowHeight;
+
+    int menuWidth;
+    int menuHeight;
+
+    const char* title;
 private:
     Globals() {};
     Globals(const Globals&) {};
