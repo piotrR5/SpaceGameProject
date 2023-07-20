@@ -10,7 +10,18 @@
 #include "entity-projectile.hpp"
 #include "../../src/engine/utils/log.hpp"
 
-void searchIfPlanetClicked(int x, int y, int& id);
-bool isObjectClicked(int mouseX, int mouseY);
+class ObjectHandler
+{
+    public :
+    vector<Planet> planets;
+    vector<Vessel> vessels;
+    vector<Texture> textures;
+    void searchIfPlanetClicked(int x, int y, int& id);
+    bool isObjectClicked(int mouseX, int mouseY);
+    void addPlanet(Planet p);
+    void addVessel(Vessel v);
+    void addTexture(const char* src);
 
+    ObjectHandler();
+};
 #endif

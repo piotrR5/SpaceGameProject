@@ -54,6 +54,7 @@ private:
 
     Gui gui;
     
+    ObjectHandler OH;
 
     void eventHandler(bool& run);
     void onKeyPress(SDL_Event event, bool& run);

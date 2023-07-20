@@ -11,7 +11,6 @@ class Planet
 {
     private : 
     int posX, posY;
-    const char* planetTexture;
     Texture planetTextureGenerated;
     int planetRadius;
     int planetGravity;
@@ -23,7 +22,7 @@ class Planet
 
     public : 
     Planet(); // Generic constructor
-    Planet(std::pair<int,int> position,const char* texturePath, int grav, int elf, int radius); // Specific constructor
+    Planet(std::pair<int,int> position,int grav, int elf, int radius, Texture& txt); // Specific constructor
     std::pair<int,int> getPosition();
     int getRadius();
     void generateTexture();
