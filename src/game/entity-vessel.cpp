@@ -9,7 +9,7 @@ Vessel::Vessel()
     pathFindingRadius = 0;
     armorType(light);
 }
-Vessel::Vessel(int pthR, int x, int y, uint8_t arm, std::vector<part> segm, const char* txtPath, SDL_Renderer* renderer)
+Vessel::Vessel(int pthR, int x, int y, uint8_t arm, std::vector<part> segm, Texture& txt, SDL_Renderer* renderer)
 {
     pos_x = x;
     pos_y = y;
@@ -33,6 +33,5 @@ Vessel::Vessel(int pthR, int x, int y, uint8_t arm, std::vector<part> segm, cons
         break;
     }
     segments = segm;
-    shipTexture.initTexture(txtPath);
-    shipTexture.loadTexture(txtPath);
+    shipTexture = txt;
 }
