@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <tuple>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "../engine/rendering/texture.hpp"
@@ -11,15 +12,17 @@
 class Planet
 {
     private : 
-    int posX, posY;
+    float posX, posY;
     Texture planetTextureGenerated;
     int planetRadius;
     int planetGravity;
     int planetElectromagneticField;
+    uint8_t velocity;
     // Flags
     bool isSelected = false;
     bool isVisible = true;
     bool isDestructible = false;
+    bool isMoving = false;
 
     public : 
     Planet(); // Generic constructor
@@ -27,7 +30,13 @@ class Planet
     vec2 getPosition();
     int getRadius();
     void generateTexture();
+    uint8_t getVelocity();
     Texture getTexture();
     void modifyFlags(uint8_t flag);
+    bool getFlagState(uint8_t flag);
+    void modifyPosition(int x, int y);
+    void setPosition(int x, int y);
+
+    bool operator==(const Planet& rhs) const;
 };
 #endif

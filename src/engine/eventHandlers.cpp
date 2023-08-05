@@ -73,11 +73,24 @@ void Engine::onKeyRelease(SDL_Event event, bool& run){
 }
 
 void Engine::onMouseClick(SDL_Event event, bool& run){
-    log("Mouse button clicked");
     int mouse_x,mouse_y;
     SDL_GetMouseState(&mouse_x, &mouse_y);
-    vec2 mouseInGamePos = camera.ConvertToWorldCoords({mouse_x,mouse_y});
-    OH.isObjectClicked(mouse_x, mouse_y);
+    if(event.button.button == SDL_BUTTON_LEFT)
+    {
+        log("Left mouse button clicked.");
+        vec2 mouseInGamePos = camera.ConvertToWorldCoords({mouse_x,mouse_y});
+        OH.isObjectClicked(mouseInGamePos.x, mouseInGamePos.y);
+    }
+    else if(event.button.button == SDL_BUTTON_RIGHT)
+    {
+        log("Right mouse button clicked.");
+        vec2 mouseInGamePos = camera.ConvertToWorldCoords({mouse_x,mouse_y});
+        OH.addToMovementList(mouseInGamePos.x, mouseInGamePos.y);
+    }
+    else if(event.button.button == SDL_BUTTON_MIDDLE)
+    {
+        log("Scroll pressed.");
+    }
 }
 
 void Engine::onMouseRelease(SDL_Event event, bool& run){

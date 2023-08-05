@@ -102,13 +102,12 @@ void Engine::mainLoop(){
     bool run=true;
     log("main loop started");
     OH.addTexture("assets/planetTest.png");
-    Planet testPlanet({0,0},0,0,1000,OH.textures[0]);
-    OH.addPlanet(testPlanet);
+    OH.addPlanet(Planet({0,0},0,0,1000,OH.textures[0]));
     while(run){
         int startLoop=SDL_GetTicks();
 
         SDL_RenderClear(global.renderer);
-
+        OH.moveObjects();
         if(gui.visible==false)eventHandler(run);
         else gui.eventHandler(run);
 

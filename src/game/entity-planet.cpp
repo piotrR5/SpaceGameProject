@@ -18,8 +18,9 @@ Planet::Planet(std::pair<int,int> position, int grav, int elf, int radius,const 
     SDL_Rect* temp = new SDL_Rect;
     *temp=*(txt.textureRectangle);
     planetTextureGenerated.initTexture(txt.textureTexture, temp);
-    planetTextureGenerated.textureRectangle->x=posX;
-    planetTextureGenerated.textureRectangle->y=posY;
+    planetTextureGenerated.textureRectangle->x=posX-planetTextureGenerated.textureRectangle->w/2;
+    planetTextureGenerated.textureRectangle->y=posY-planetTextureGenerated.textureRectangle->h/2;
+    velocity = 10;
 }
 vec2 Planet::getPosition()
 {
@@ -28,6 +29,36 @@ vec2 Planet::getPosition()
 int Planet::getRadius()
 {
     return planetRadius;
+}
+void Planet::modifyPosition(int x, int y)
+{
+    posX+=x;
+    posY+=y;
+    planetTextureGenerated.textureRectangle->x=posX-planetTextureGenerated.textureRectangle->w/2;
+    planetTextureGenerated.textureRectangle->y=posY-planetTextureGenerated.textureRectangle->h/2;
+}
+void Planet::setPosition(int x, int y)
+{
+    posX=x;
+    posY=y;
+    planetTextureGenerated.textureRectangle->x=posX-planetTextureGenerated.textureRectangle->w/2;
+    planetTextureGenerated.textureRectangle->y=posY-planetTextureGenerated.textureRectangle->h/2;
+}
+uint8_t Planet::getVelocity()
+{
+    return velocity;
+}
+bool Planet::getFlagState(uint8_t flag)
+{
+    switch (flag)
+    {
+    case 1 : return isSelected;
+    case 2 : return isVisible;
+    case 3 : return isDestructible;
+    case 4 : return isMoving;
+    default : logErr("Wrong flag !"); break;
+    }
+    return false;
 }
 void Planet::modifyFlags(uint8_t flag)
 {
@@ -45,6 +76,9 @@ void Planet::modifyFlags(uint8_t flag)
         if(isDestructible) isDestructible=0;
         else isDestructible = 1;
         break;
+        case 4 :
+        if(isMoving) isMoving = 0;
+        else isMoving = 1;
         default : 
         logErr("Wrong flag !");
         break;
@@ -54,3 +88,7 @@ Texture Planet::getTexture()
 {
     return planetTextureGenerated;
 }
+
+bool Planet::operator==(const Planet& rhs) const
+{return std::tie(posX,posY,planetGravity,planetRadius,planetElectromagneticField,velocity)
+==std::tie(rhs.posX,rhs.posY,rhs.planetGravity,rhs.planetRadius,rhs.planetElectromagneticField,rhs.velocity);}
