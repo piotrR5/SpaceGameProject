@@ -102,7 +102,8 @@ void Engine::mainLoop(){
     bool run=true;
     log("main loop started");
     OH.addTexture("assets/planetTest.png");
-    OH.addPlanet(Planet({0,0},0,0,1000,OH.textures[0]));
+    OH.addPlanet(Planet({0,0},0,0,100,OH.textures[0]));
+    OH.addPlanet(Planet({3000,3000},0,0,100,OH.textures[0]));
     while(run){
         int startLoop=SDL_GetTicks();
 

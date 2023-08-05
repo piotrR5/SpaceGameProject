@@ -13,4 +13,6 @@ struct vec2{
 struct matrix22{
     float xi, yi, xj, yj;
 };
+
+float DistanceBetweenPoints(vec2 start, vec2 end);
 #endif

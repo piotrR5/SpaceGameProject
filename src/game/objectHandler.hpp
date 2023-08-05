@@ -26,6 +26,8 @@ class ObjectHandler
     void addVessel(Vessel v);
     void addTexture(const char* src);
 
+    bool PlanetCollisionCheck(pair<Planet&, vec2>, float& se, float& dx, float& dy);
+
     ObjectHandler();
 };
 #endif

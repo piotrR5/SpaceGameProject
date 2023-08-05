@@ -70,12 +70,12 @@ void ObjectHandler::moveObjects()
 {
     for(auto& k : planetsMovementList)
     {
-        if(k.first.getFlagState(5))
+        float se ,dx ,dy;
+        se = DistanceBetweenPoints({k.first.getPosition().x,k.first.getPosition().y},{k.second.x,k.second.y});
+        dx = -k.first.getPosition().x+k.second.x;
+        dy = -k.first.getPosition().y+k.second.y;
+        if(k.first.getFlagState(5) && !PlanetCollisionCheck(k,se,dx,dy))
         {
-            float se ,dx ,dy;
-            se = sqrt(pow(k.first.getPosition().x-k.second.x,2)+pow(k.first.getPosition().y-k.second.y,2));
-            dx = -k.first.getPosition().x+k.second.x;
-            dy = -k.first.getPosition().y+k.second.y;
             if(se<=k.first.getVelocity())
             {
                 k.first.setPosition(k.second.x,k.second.y);
@@ -90,6 +90,16 @@ void ObjectHandler::moveObjects()
             }
         }
     }
+    vector<pair<Planet&, vec2>> tmp;
+    for(auto& d : planetsMovementList)
+    {
+        if(d.first.getFlagState(5))
+        {
+            tmp.push_back(d);
+        }
+    }
+    planetsMovementList.swap(tmp);
+    tmp.clear();
 }
 void ObjectHandler::addPlanet(Planet p)
 {
@@ -114,4 +124,18 @@ void ObjectHandler::addTexture(const char* src)
     txt.initTexture(src);
     txt.loadTexture(src);
     textures.push_back(txt);
+}
+bool ObjectHandler::PlanetCollisionCheck(pair<Planet&,vec2> k, float& se, float& dx, float& dy)
+{
+    float x = ((dx/se)*k.first.getVelocity()), y = ((dy/se)*k.first.getVelocity());
+    x += k.first.getPosition().x;
+    y += k.first.getPosition().y;
+    for(auto& p : planets)
+    {
+        if(sqrt(pow(x-p.getPosition().x,2)+pow(y-p.getPosition().y,2))<=p.getRadius())
+        {
+            return true;
+        }
+    }
+    return false;
 }
