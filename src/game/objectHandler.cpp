@@ -47,6 +47,7 @@ void ObjectHandler::addToMovementList(int point_x, int point_y)
             {
                 log("Added to movement list");
                 k.modifyFlags(4);
+                k.modifyFlags(5);
                 vec2 x = {point_x,point_y};
                 planetsMovementList.push_back({k,x});
             }
@@ -67,28 +68,27 @@ void ObjectHandler::addToMovementList(int point_x, int point_y)
 }
 void ObjectHandler::moveObjects()
 {
-    uint8_t id = 0;
-    vector<uint8_t> ids;
     for(auto& k : planetsMovementList)
     {
-        if((pow(k.first.getPosition().x-k.second.x,2)+pow(k.first.getPosition().y-k.second.y,2))<=pow(k.first.getVelocity(),2))
+        if(k.first.getFlagState(5))
         {
-            k.first.setPosition(k.second.x,k.second.y);
-            ids.push_back(id);
-            logOK("Got there");
+            float se ,dx ,dy;
+            se = sqrt(pow(k.first.getPosition().x-k.second.x,2)+pow(k.first.getPosition().y-k.second.y,2));
+            dx = -k.first.getPosition().x+k.second.x;
+            dy = -k.first.getPosition().y+k.second.y;
+            if(se<=k.first.getVelocity())
+            {
+                k.first.setPosition(k.second.x,k.second.y);
+                k.first.modifyFlags(4);
+                k.first.modifyFlags(5);
+                logOK("Got there");
+            }
+            else
+            {
+                float xMod = ((dx/se)*k.first.getVelocity()), yMod = ((dy/se)*k.first.getVelocity());
+                k.first.modifyPosition(xMod,yMod);
+            }
         }
-        else
-        {
-            float angle = atan((k.first.getPosition().x-k.second.x)/(k.first.getPosition().y-k.second.y));
-            float xMod = (cos(angle)*k.first.getVelocity()), yMod = (sin(angle)*k.first.getVelocity());
-            k.first.modifyPosition(xMod,yMod);
-        }
-        id++;
-    }
-    for(int i = 0; i<ids.size();i++)
-    {
-        planetsMovementList.erase(planetsMovementList.begin()+id);
-        logOK("Object erased.");
     }
 }
 void ObjectHandler::addPlanet(Planet p)

@@ -56,6 +56,7 @@ bool Planet::getFlagState(uint8_t flag)
     case 2 : return isVisible;
     case 3 : return isDestructible;
     case 4 : return isMoving;
+    case 5 : return hasToMove;
     default : logErr("Wrong flag !"); break;
     }
     return false;
@@ -79,6 +80,11 @@ void Planet::modifyFlags(uint8_t flag)
         case 4 :
         if(isMoving) isMoving = 0;
         else isMoving = 1;
+        break;
+        case 5 : 
+        if(hasToMove) hasToMove = 0;
+        else hasToMove = 1;
+        break;
         default : 
         logErr("Wrong flag !");
         break;

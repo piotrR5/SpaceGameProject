@@ -23,6 +23,7 @@ class Planet
     bool isVisible = true;
     bool isDestructible = false;
     bool isMoving = false;
+    bool hasToMove = false;
 
     public : 
     Planet(); // Generic constructor
