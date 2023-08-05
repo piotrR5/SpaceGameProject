@@ -25,7 +25,7 @@ bool ObjectHandler::isObjectClicked(int mouseX, int mouseY)
         log("Planet isn't clicked.");
         for(auto& k : planets)
         {
-            k.modifyFlags(1);
+            if(k.getFlagState(1))k.modifyFlags(1);
             log("Flag modified");
         }
     }
@@ -132,7 +132,9 @@ bool ObjectHandler::PlanetCollisionCheck(pair<Planet&,vec2> k, float& se, float&
     y += k.first.getPosition().y;
     for(auto& p : planets)
     {
-        if(sqrt(pow(x-p.getPosition().x,2)+pow(y-p.getPosition().y,2))<=p.getRadius())
+        auto d = DistanceBetweenPoints({x,y}, p.getPosition());
+        if(d <= p.getRadius() + k.first.getRadius() && !(p == k.first))
+        //if(sqrt(pow(x-p.getPosition().x,2)+pow(y-p.getPosition().y,2))<=p.getRadius()+k.first.getRadius())
         {
             return true;
         }
