@@ -18,7 +18,7 @@ OUT = SPACEGAME
 
 
 all: clean
-	g++ $(MAIN) $(ENGINE) $(RENDERING) $(UTILS) $(GAME) $(GUI) $(LIBS) -o $(OUT) $(FLAG)
+	g++ $(MAIN) $(ENGINE) $(RENDERING) $(UTILS) $(GAME) $(GUI) $(LIBS) -g -o $(OUT) $(FLAG)
 prof: clean
 	g++ $(MAIN) $(ENGINE) $(RENDERING) $(UTILS) $(GAME) $(GUI) $(LIBS) -o $(OUT) -pg $(FLAG)
 	./$(OUT)
