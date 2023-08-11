@@ -14,5 +14,11 @@ struct matrix22{
     float xi, yi, xj, yj;
 };
 
+struct rectangle
+{
+    vec2 position;
+    vec2 A,B,C,D;
+};
+
 float DistanceBetweenPoints(vec2 start, vec2 end);
 #endif

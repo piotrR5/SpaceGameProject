@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "../engine/rendering/texture.hpp"
+#include "../engine/utils/sg_math.hpp"
 
 using namespace std;
 struct weapon // Offensive weapons
@@ -34,14 +35,29 @@ struct part // Ship segment
 };
 class Vessel
 {
+    private :
     int pathFindingRadius;
-    int pos_x,pos_y;
+    rectangle vesselRect;
+    const int vesselHeight = 100, vesselWidth = 50;
     enum armorType{light,medium,heavy,shield};
     std::vector<part> segments;
     Texture shipTexture;
 
+    bool isVisible = true;
+    bool isDestructible = true;
+    bool isMoving = false;
+    bool hasToMove = false;
+
+    public :
+
     Vessel(); // Generic constructor
-    Vessel(int pthR, int x, int y, uint8_t arm, std::vector<part> segm, Texture& txt, SDL_Renderer* renderer); // Specfific constructor
+    Vessel(int pthR,vec2 pos, uint8_t arm, std::vector<part> segm, Texture& txt, SDL_Renderer* renderer); // Specfific constructor
+
+    vec2 GetPosition();
+    void ModifyFlags(uint8_t flag);
+    bool GetFlagState(uint8_t flag);
+    rectangle GetVesselRectangle();
+
 };
 
 #endif

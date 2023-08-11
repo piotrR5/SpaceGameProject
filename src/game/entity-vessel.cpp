@@ -4,15 +4,22 @@
 
 Vessel::Vessel()
 {
-    pos_x=0;
-    pos_y=0;
+    vec2 pos = {0,0};
+    vesselRect.position = pos;
+    vesselRect.A = {pos.x-vesselWidth/2,pos.y+vesselHeight/2};
+    vesselRect.B = {pos.x+vesselWidth/2,pos.y+vesselHeight/2};
+    vesselRect.C = {pos.x+vesselWidth/2,pos.y-vesselHeight/2};
+    vesselRect.D = {pos.x-vesselWidth/2,pos.y-vesselHeight/2};
     pathFindingRadius = 0;
     armorType(light);
 }
-Vessel::Vessel(int pthR, int x, int y, uint8_t arm, std::vector<part> segm, Texture& txt, SDL_Renderer* renderer)
+Vessel::Vessel(int pthR,vec2 pos, uint8_t arm, std::vector<part> segm, Texture& txt, SDL_Renderer* renderer)
 {
-    pos_x = x;
-    pos_y = y;
+    vesselRect.position = pos;
+    vesselRect.A = {pos.x-vesselWidth/2,pos.y+vesselHeight/2};
+    vesselRect.B = {pos.x+vesselWidth/2,pos.y+vesselHeight/2};
+    vesselRect.C = {pos.x+vesselWidth/2,pos.y-vesselHeight/2};
+    vesselRect.D = {pos.x-vesselWidth/2,pos.y-vesselHeight/2};
     pathFindingRadius = pthR;
     switch(arm)
     {
@@ -34,4 +41,52 @@ Vessel::Vessel(int pthR, int x, int y, uint8_t arm, std::vector<part> segm, Text
     }
     segments = segm;
     shipTexture = txt;
+}
+
+vec2 Vessel::GetPosition()
+{
+    return vesselRect.position;
+}
+
+void Vessel::ModifyFlags(uint8_t flag)
+{
+    switch (flag)
+    {
+    case 1 :
+        if(isVisible) isVisible = 0;
+        else isVisible = 1;
+        break;
+    case 2 :
+        if(isDestructible) isDestructible = 0;
+        else isDestructible = 1;
+        break;
+    case 3 :
+        if(isMoving) isMoving = 0;
+        else isMoving = 1;
+        break;
+    case 4 :
+        if(hasToMove) hasToMove = 0;
+        else hasToMove = 1;
+        break;
+    default:
+        logErr("Wrong Flag !");
+        break;
+    }
+}
+
+bool Vessel::GetFlagState(uint8_t flag)
+{
+    switch (flag)
+    {
+    case 1 : return isVisible;
+    case 2 : return isDestructible;
+    case 3 : return isMoving;
+    case 4 : return hasToMove;
+    default: logErr("Wrong flag !"); return false;
+    }
+}
+
+rectangle Vessel::GetVesselRectangle()
+{
+    return vesselRect;
 }
