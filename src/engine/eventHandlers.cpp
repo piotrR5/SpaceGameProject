@@ -78,7 +78,9 @@ void Engine::onMouseClick(SDL_Event event, bool& run){
     if(event.button.button == SDL_BUTTON_LEFT)
     {
         log("Left mouse button clicked.");
+        logOK("Mouse coords : "); cout << mouse_x << " "<<mouse_y<<endl;
         vec2 mouseInGamePos = camera.ConvertToWorldCoords({mouse_x,mouse_y});
+        cout<<"Conversion : " << mouseInGamePos.x<<" " << mouseInGamePos.y<<endl;
         OH.isObjectClicked(mouseInGamePos.x, mouseInGamePos.y);
     }
     else if(event.button.button == SDL_BUTTON_RIGHT)

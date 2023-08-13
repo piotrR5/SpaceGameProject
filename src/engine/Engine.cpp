@@ -118,7 +118,7 @@ void Engine::mainLoop(){
             rendererObject.renderTextureWithCamera(k.getTexture(),camera);
             SDL_RenderDrawPoint(global.renderer,camera.ConvertToCameraCoords(k.getPosition()).x,camera.ConvertToCameraCoords(k.getPosition()).y);
          }
-
+        
         gui.renderGui();
 
         SDL_RenderPresent(global.renderer);

@@ -43,7 +43,6 @@ bool ObjectHandler::isObjectClicked(int mouseX, int mouseY)
     thread vesselCalc([=] {searchIfVesselClicked(mouseX,mouseY);});
     planetCalc.join();
     vesselCalc.join();
-    logOK("Mouse position : " ); std::cout<<mouseX<<" "<<mouseY<<endl;
     if(planetFoundId==-1)
     {
         log("Planet isn't clicked.");
