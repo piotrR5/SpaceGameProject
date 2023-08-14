@@ -20,8 +20,6 @@ Planet::Planet(std::pair<int,int> position, int grav, int elf, int radius,const 
     temp->h = radius * 2;
     *temp=*(txt.textureRectangle);
     planetTextureGenerated.initTexture(txt.textureTexture, temp);
-    // planetTextureGenerated.textureRectangle->w=2*radius;
-    // planetTextureGenerated.textureRectangle->h=2*radius;
     planetTextureGenerated.textureRectangle->x=posX-planetTextureGenerated.textureRectangle->w/2;
     planetTextureGenerated.textureRectangle->y=posY-planetTextureGenerated.textureRectangle->h/2;
     velocity = 10;

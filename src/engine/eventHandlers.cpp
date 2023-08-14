@@ -34,7 +34,7 @@ void Engine::eventHandler(bool& run){
 }
 
 void Engine::onKeyPress(SDL_Event event, bool& run){
-    log("Key pressed");
+    //log("Key pressed");
     if(event.key.keysym.sym==SDLK_q){
         run=false;
         return;
@@ -57,7 +57,7 @@ void Engine::onKeyPress(SDL_Event event, bool& run){
 }
 
 void Engine::onKeyRelease(SDL_Event event, bool& run){
-    log("Key released");
+    //log("Key released");
     if(event.key.keysym.sym==SDLK_w){
         camera.velocity.y=0;
     }   
