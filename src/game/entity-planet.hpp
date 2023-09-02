@@ -8,12 +8,11 @@
 #include <SDL2/SDL_image.h>
 #include "../engine/rendering/texture.hpp"
 #include "../engine/utils/sg_math.hpp"
+#include "objects.hpp"
 
-class Planet
+class Planet : public Object
 {
     private : 
-    float posX, posY;
-    Texture planetTextureGenerated;
     int planetRadius;
     int planetGravity;
     int planetElectromagneticField;
@@ -26,8 +25,7 @@ class Planet
     bool hasToMove = false;
 
     public : 
-    Planet(); // Generic constructor
-    Planet(std::pair<int,int> position,int grav, int elf, int radius,const Texture& txt); // Specific constructor
+    Planet(rectangle planetRectangle,int grav, int elf, int radius,Texture& txt); // Specific constructor
     vec2 getPosition();
     int getRadius();
     void generateTexture();
@@ -35,8 +33,6 @@ class Planet
     Texture getTexture();
     void modifyFlags(uint8_t flag);
     bool getFlagState(uint8_t flag);
-    void modifyPosition(int x, int y);
-    void setPosition(int x, int y);
 
     bool operator==(const Planet& rhs) const;
 };

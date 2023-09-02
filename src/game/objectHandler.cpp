@@ -75,74 +75,6 @@ bool ObjectHandler::isObjectClicked(int mouseX, int mouseY)
     }
     return 0;
 }
-
-// MOVEMENT SECTION //
-
-void ObjectHandler::addToMovementList(int point_x, int point_y)
-{
-    for(auto& k : planets)
-    {
-        if(k.getFlagState(1))
-        {
-            if(!k.getFlagState(4))
-            {
-                log("Added to movement list");
-                k.modifyFlags(4);
-                k.modifyFlags(5);
-                vec2 x = {point_x,point_y};
-                planetsMovementList.push_back({k,x});
-            }
-            else 
-            {
-                for(auto& h : planetsMovementList)
-                {
-                    if(k == h.first)
-                    {
-                        h.second = {(float)point_x,(float)point_y};
-                        logOK("Changed move order");
-                    }
-                }
-            }
-        }
-        
-    }
-}
-void ObjectHandler::moveObjects()
-{
-    for(auto& k : planetsMovementList)
-    {
-        float se ,dx ,dy;
-        se = DistanceBetweenPoints({k.first.getPosition().x,k.first.getPosition().y},{k.second.x,k.second.y});
-        dx = -k.first.getPosition().x+k.second.x;
-        dy = -k.first.getPosition().y+k.second.y;
-        if(k.first.getFlagState(5) && !PlanetCollisionCheck(k,se,dx,dy))
-        {
-            if(se<=k.first.getVelocity())
-            {
-                k.first.setPosition(k.second.x,k.second.y);
-                k.first.modifyFlags(4);
-                k.first.modifyFlags(5);
-                logOK("Got there");
-            }
-            else
-            {
-                float xMod = ((dx/se)*k.first.getVelocity()), yMod = ((dy/se)*k.first.getVelocity());
-                k.first.modifyPosition(xMod,yMod);
-            }
-        }
-    }
-    vector<pair<Planet&, vec2>> tmp;
-    for(auto& d : planetsMovementList)
-    {
-        if(d.first.getFlagState(5))
-        {
-            tmp.push_back(d);
-        }
-    }
-    planetsMovementList.swap(tmp);
-    tmp.clear();
-}
-
 // VARIABLES HANDLING FUNCTIONS //
 
 void ObjectHandler::addPlanet(Planet p)
@@ -180,7 +112,7 @@ bool ObjectHandler::PlanetCollisionCheck(pair<Planet&,vec2> k, float& se, float&
     for(auto& p : planets)
     {
         auto d = DistanceBetweenPoints({x,y}, p.getPosition());
-        if(d <= p.getRadius() + k.first.getRadius() && !(p == k.first))
+        if(d <= p.getRadius() + k.first.getRadius() && !(p.GetObjectID() == k.first.GetObjectID()))
         {
             return true;
         }

@@ -6,7 +6,7 @@ RENDERING = src/engine/rendering/texture.cpp src/engine/rendering/texture.hpp sr
 
 UTILS = src/engine/utils/sg_math.cpp src/engine/utils/sg_math.hpp src/engine/utils/log.cpp src/engine/utils/log.hpp src/engine/utils/config.hpp
 
-GAME = src/game/entity-vessel.hpp src/game/entity-vessel.cpp src/game/entity-planet.hpp src/game/entity-planet.cpp src/game/entity-projectile.hpp src/game/entity-projectile.cpp src/game/objectHandler.hpp src/game/objectHandler.cpp
+GAME = src/game/entity-vessel.hpp src/game/entity-vessel.cpp src/game/entity-planet.hpp src/game/entity-planet.cpp src/game/entity-projectile.hpp src/game/entity-projectile.cpp src/game/objectHandler.hpp src/game/objectHandler.cpp src/game/movement-battle.cpp src/game/objects.hpp src/game/objects.cpp
 
 MAIN = main.cpp
 

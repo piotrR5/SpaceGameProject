@@ -2,24 +2,8 @@
 #include "../../src/engine/utils/log.hpp"
 #include <vector>
 
-Vessel::Vessel()
+Vessel::Vessel(int pthR,rectangle VesselRectangle, uint8_t arm, Texture& txt) : Object(txt,VesselRectangle)
 {
-    vec2 pos = {0,0};
-    vesselRect.position = pos;
-    vesselRect.A = {pos.x-vesselWidth/2,pos.y+vesselHeight/2};
-    vesselRect.B = {pos.x+vesselWidth/2,pos.y+vesselHeight/2};
-    vesselRect.C = {pos.x+vesselWidth/2,pos.y-vesselHeight/2};
-    vesselRect.D = {pos.x-vesselWidth/2,pos.y-vesselHeight/2};
-    pathFindingRadius = 0;
-    armorType(light);
-}
-Vessel::Vessel(int pthR,vec2 pos, uint8_t arm, std::vector<part> segm, Texture& txt, SDL_Renderer* renderer)
-{
-    vesselRect.position = pos;
-    vesselRect.A = {pos.x-vesselWidth/2,pos.y+vesselHeight/2};
-    vesselRect.B = {pos.x+vesselWidth/2,pos.y+vesselHeight/2};
-    vesselRect.C = {pos.x+vesselWidth/2,pos.y-vesselHeight/2};
-    vesselRect.D = {pos.x-vesselWidth/2,pos.y-vesselHeight/2};
     pathFindingRadius = pthR;
     switch(arm)
     {
@@ -39,13 +23,11 @@ Vessel::Vessel(int pthR,vec2 pos, uint8_t arm, std::vector<part> segm, Texture& 
         logErr("Wrong armor type ! Setting to light.");
         break;
     }
-    segments = segm;
-    shipTexture = txt;
 }
 
 vec2 Vessel::GetPosition()
 {
-    return vesselRect.position;
+    return objectRectangle.position;
 }
 
 void Vessel::ModifyFlags(uint8_t flag)
@@ -68,6 +50,9 @@ void Vessel::ModifyFlags(uint8_t flag)
         if(hasToMove) hasToMove = 0;
         else hasToMove = 1;
         break;
+    case 5 :
+        if(isSelected) isSelected = 0;
+        else isSelected = 1;
     default:
         logErr("Wrong Flag !");
         break;
@@ -82,11 +67,27 @@ bool Vessel::GetFlagState(uint8_t flag)
     case 2 : return isDestructible;
     case 3 : return isMoving;
     case 4 : return hasToMove;
+    case 5 : return isSelected;
     default: logErr("Wrong flag !"); return false;
     }
 }
 
 rectangle Vessel::GetVesselRectangle()
 {
-    return vesselRect;
+    return objectRectangle;
+}
+
+uint8_t Vessel::GetVesselId()
+{
+    return id;
+}
+
+void Vessel::ChangeRectangle(rectangle newRect)
+{
+    objectRectangle = newRect;
+    return;
+}
+uint8_t Vessel::GetVelocity()
+{
+    return velocity;
 }

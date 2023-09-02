@@ -100,7 +100,7 @@ void Engine::onMouseRelease(SDL_Event event, bool& run){
 }
 
 void Engine::onMouseScroll(SDL_Event event, bool& run){
-    log("Mouse scrolled");
+    //log("Mouse scrolled");
     if(event.wheel.y > 0){
         camera.rescale(1.05);
     }else if(event.wheel.y < 0 ){

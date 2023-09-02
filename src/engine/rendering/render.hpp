@@ -7,6 +7,7 @@
 
 #include "../utils/log.hpp"
 #include "../utils/config.hpp"
+#include "../../game/objects.hpp"
 
 #include "texture.hpp"
 #include "handleCamera.hpp"
@@ -18,9 +19,14 @@ class Renderer{
 public:
     bool initRenderer(SDL_Rect* windowRect);
 
-    bool basicRenderTexture(Texture txt);
+    bool basicRenderTexture(Texture txt); // Render in the camera
 
-    bool renderTextureWithCamera(Texture txt, Camera cam);
+    bool renderTextureWithCamera(Texture txt, Camera cam); // Render in the world
+
+    bool RenderObject(Object& obj, Camera cam);
+
+    bool RenderCollisonRects(Object& obj, Camera cam);
+
 };
 
 #endif

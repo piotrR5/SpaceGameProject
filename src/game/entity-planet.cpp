@@ -1,50 +1,19 @@
 #include "entity-planet.hpp"
 
-Planet::Planet()
+Planet::Planet(rectangle planetRectangle, int grav, int elf, int radius,Texture& txt) : Object(txt,planetRectangle)
 {
-    posX = 0;
-    posY = 0;
-    planetRadius = 0;
-    planetElectromagneticField = 0;
-    planetGravity = 0;
-}
-Planet::Planet(std::pair<int,int> position, int grav, int elf, int radius,const Texture& txt)
-{
-    posX=position.first;
-    posY=position.second;
     planetGravity = grav;
     planetRadius = radius;
     planetElectromagneticField = elf;
-    SDL_Rect* temp = new SDL_Rect;
-    temp->w = radius * 2;
-    temp->h = radius * 2;
-    *temp=*(txt.textureRectangle);
-    planetTextureGenerated.initTexture(txt.textureTexture, temp);
-    planetTextureGenerated.textureRectangle->x=posX-planetTextureGenerated.textureRectangle->w/2;
-    planetTextureGenerated.textureRectangle->y=posY-planetTextureGenerated.textureRectangle->h/2;
     velocity = 10;
 }
 vec2 Planet::getPosition()
 {
-    return {posX,posY};
+    return objectRectangle.position;
 }
 int Planet::getRadius()
 {
     return planetRadius;
-}
-void Planet::modifyPosition(int x, int y)
-{
-    posX+=x;
-    posY+=y;
-    planetTextureGenerated.textureRectangle->x=posX-planetTextureGenerated.textureRectangle->w/2;
-    planetTextureGenerated.textureRectangle->y=posY-planetTextureGenerated.textureRectangle->h/2;
-}
-void Planet::setPosition(int x, int y)
-{
-    posX=x;
-    posY=y;
-    planetTextureGenerated.textureRectangle->x=posX-planetTextureGenerated.textureRectangle->w/2;
-    planetTextureGenerated.textureRectangle->y=posY-planetTextureGenerated.textureRectangle->h/2;
 }
 uint8_t Planet::getVelocity()
 {
@@ -94,9 +63,5 @@ void Planet::modifyFlags(uint8_t flag)
 }
 Texture Planet::getTexture()
 {
-    return planetTextureGenerated;
+    return objectTexture;
 }
-
-bool Planet::operator==(const Planet& rhs) const
-{return std::tie(posX,posY,planetGravity,planetRadius,planetElectromagneticField,velocity)
-==std::tie(rhs.posX,rhs.posY,rhs.planetGravity,rhs.planetRadius,rhs.planetElectromagneticField,rhs.velocity);}

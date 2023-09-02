@@ -14,17 +14,26 @@
 class ObjectHandler
 {
     public :
+    const uint8_t maxRotationAngle = 1;
+
     vector<Planet> planets;
     vector<Vessel> vessels;
     vector<Texture> textures;
     vector<pair<Planet&,vec2>> planetsMovementList;
+    vector<tuple<Vessel&,vec2,float>> vesselMovementList;
+
     int planetFoundId;
     int vesselFoundId;
+
     void searchIfPlanetClicked(int x, int y);
     void searchIfVesselClicked(int x, int y);
     bool isObjectClicked(int mouseX, int mouseY);
+
     void addToMovementList(int point_x, int point_y);
-    void moveObjects();
+    void MoveVessels();
+    void MoveObjects();
+    void MovePlanets();
+
     void addPlanet(Planet p);
     void addVessel(Vessel v);
     void addTexture(const char* src);

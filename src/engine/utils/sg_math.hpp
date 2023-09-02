@@ -21,4 +21,7 @@ struct rectangle
 };
 
 float DistanceBetweenPoints(vec2 start, vec2 end);
+rectangle RotateRect(rectangle inputRectangle, float angle);
+rectangle GenerateBasicRect();
+float FindRotationAngle(vec2 mousePos, rectangle Rect);
 #endif

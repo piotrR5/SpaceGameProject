@@ -102,21 +102,22 @@ void Engine::mainLoop(){
     bool run=true;
     log("main loop started");
     OH.addTexture("assets/planetTest.png");
-    OH.addPlanet(Planet({3000,3000},0,0,500,OH.textures[0]));
-    OH.addPlanet(Planet({0,0},0,0,500,OH.textures[0]));
-    
+    OH.addTexture("assets/ShipTest.png");
+    OH.addVessel({0,GenerateBasicRect(),10,OH.textures[1]});
+    OH.addPlanet({GenerateBasicRect(),0,0,100,OH.textures[0]});
     while(run){
         int startLoop=SDL_GetTicks();
 
         SDL_RenderClear(global.renderer);
-        OH.moveObjects();
+        OH.MoveObjects();
         if(gui.visible==false)eventHandler(run);
         else gui.eventHandler(run);
 
          for(auto& k : OH.planets)
          {
-            rendererObject.renderTextureWithCamera(k.getTexture(),camera);
-            SDL_RenderDrawPoint(global.renderer,camera.ConvertToCameraCoords(k.getPosition()).x,camera.ConvertToCameraCoords(k.getPosition()).y);
+            rendererObject.RenderObject(k,camera);
+            rendererObject.RenderCollisonRects(k,camera);
+            k.ModifyAngle(0.1);
          }
         
         gui.renderGui();
